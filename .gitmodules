@@ -1,0 +1,3 @@
+[submodule "libnanovg/nanovg"]
+	path = libnanovg/nanovg
+	url = https://github.com/memononen/nanovg.git

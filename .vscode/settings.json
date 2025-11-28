@@ -1,0 +1,12 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "files.associations": {
+        "config": "jsonc",
+        "*.asm": "asm-intel-x86-generic",
+        ".ansible-lint": "yaml",
+        "nanovg_gl.h": "c",
+        "nanovg_gl_utils.h": "c",
+        "nanovgffm.h": "c",
+        "nanovg.h": "c"
+    }
+}
