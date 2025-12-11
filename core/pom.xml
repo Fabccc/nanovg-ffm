@@ -6,7 +6,7 @@
   <parent>
     <artifactId>parent-pom</artifactId>
     <groupId>com.fabcc.nanovg</groupId>
-    <version>1.0.0</version>
+    <version>0.0.1-alpha4</version>
   </parent>
 
   <groupId>com.fabcc.nanovg</groupId>
@@ -26,12 +26,22 @@
       </resource>
     </resources>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <release>25</release>
+        </configuration>
+      </plugin>
       <!-- Bundle lib folder -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.fabcc.nanovg.lib</Automatic-Module-Name>
+            </manifestEntries>
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>

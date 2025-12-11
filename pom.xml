@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.fabcc.nanovg</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>1.0.0</version>
+  <version>0.0.1-alpha4</version>
   <packaging>pom</packaging>
   <name>parent-pom</name>
   <inceptionYear>2025</inceptionYear>
@@ -12,7 +15,7 @@
     <url>https://github.com/Fabcccc/NanoVG-ffm</url>
   </issueManagement>
   <properties>
-    <revision>1.0.0</revision>
+    <revision>0.0.1-alpha4</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>25</maven.compiler.release>
     <assembly.skipAssembly>true</assembly.skipAssembly>

@@ -6,7 +6,7 @@
   <parent>
     <artifactId>parent-pom</artifactId>
     <groupId>com.fabcc.nanovg</groupId>
-    <version>1.0.0</version>
+    <version>0.0.1-alpha4</version>
   </parent>
 
   <groupId>com.fabcc.nanovg</groupId>

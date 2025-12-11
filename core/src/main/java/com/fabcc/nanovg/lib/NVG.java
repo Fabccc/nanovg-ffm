@@ -2,15 +2,11 @@
 
 package com.fabcc.nanovg.lib;
 
-import java.lang.invoke.*;
-import java.lang.foreign.*;
-import java.nio.ByteOrder;
-import java.util.*;
-import java.util.function.*;
-import java.util.stream.*;
-
-import static java.lang.foreign.ValueLayout.*;
-import static java.lang.foreign.MemoryLayout.PathElement.*;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.Linker;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.SegmentAllocator;
+import java.lang.invoke.MethodHandle;
 
 public class NVG extends NVG$shared {
 
@@ -18,397 +14,440 @@ public class NVG extends NVG$shared {
         // Should not be called directly
     }
 
-    private static final int NVG_CCW = (int)1L;
+    private static final int NVG_CCW = (int) 1L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGwinding.NVG_CCW = 1
+     * {@snippet lang = c : * enum NVGwinding.NVG_CCW = 1
      * }
      */
     public static int NVG_CCW() {
         return NVG_CCW;
     }
-    private static final int NVG_CW = (int)2L;
+
+    private static final int NVG_CW = (int) 2L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGwinding.NVG_CW = 2
+     * {@snippet lang = c : * enum NVGwinding.NVG_CW = 2
      * }
      */
     public static int NVG_CW() {
         return NVG_CW;
     }
-    private static final int NVG_SOLID = (int)1L;
+
+    private static final int NVG_SOLID = (int) 1L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGsolidity.NVG_SOLID = 1
+     * {@snippet lang = c : * enum NVGsolidity.NVG_SOLID = 1
      * }
      */
     public static int NVG_SOLID() {
         return NVG_SOLID;
     }
-    private static final int NVG_HOLE = (int)2L;
+
+    private static final int NVG_HOLE = (int) 2L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGsolidity.NVG_HOLE = 2
+     * {@snippet lang = c : * enum NVGsolidity.NVG_HOLE = 2
      * }
      */
     public static int NVG_HOLE() {
         return NVG_HOLE;
     }
-    private static final int NVG_BUTT = (int)0L;
+
+    private static final int NVG_BUTT = (int) 0L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGlineCap.NVG_BUTT = 0
+     * {@snippet lang = c : * enum NVGlineCap.NVG_BUTT = 0
      * }
      */
     public static int NVG_BUTT() {
         return NVG_BUTT;
     }
-    private static final int NVG_ROUND = (int)1L;
+
+    private static final int NVG_ROUND = (int) 1L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGlineCap.NVG_ROUND = 1
+     * {@snippet lang = c : * enum NVGlineCap.NVG_ROUND = 1
      * }
      */
     public static int NVG_ROUND() {
         return NVG_ROUND;
     }
-    private static final int NVG_SQUARE = (int)2L;
+
+    private static final int NVG_SQUARE = (int) 2L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGlineCap.NVG_SQUARE = 2
+     * {@snippet lang = c : * enum NVGlineCap.NVG_SQUARE = 2
      * }
      */
     public static int NVG_SQUARE() {
         return NVG_SQUARE;
     }
-    private static final int NVG_BEVEL = (int)3L;
+
+    private static final int NVG_BEVEL = (int) 3L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGlineCap.NVG_BEVEL = 3
+     * {@snippet lang = c : * enum NVGlineCap.NVG_BEVEL = 3
      * }
      */
     public static int NVG_BEVEL() {
         return NVG_BEVEL;
     }
-    private static final int NVG_MITER = (int)4L;
+
+    private static final int NVG_MITER = (int) 4L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGlineCap.NVG_MITER = 4
+     * {@snippet lang = c : * enum NVGlineCap.NVG_MITER = 4
      * }
      */
     public static int NVG_MITER() {
         return NVG_MITER;
     }
-    private static final int NVG_ALIGN_LEFT = (int)1L;
+
+    private static final int NVG_ALIGN_LEFT = (int) 1L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGalign.NVG_ALIGN_LEFT = 1
+     * {@snippet lang = c : * enum NVGalign.NVG_ALIGN_LEFT = 1
      * }
      */
     public static int NVG_ALIGN_LEFT() {
         return NVG_ALIGN_LEFT;
     }
-    private static final int NVG_ALIGN_CENTER = (int)2L;
+
+    private static final int NVG_ALIGN_CENTER = (int) 2L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGalign.NVG_ALIGN_CENTER = 2
+     * {@snippet lang = c : * enum NVGalign.NVG_ALIGN_CENTER = 2
      * }
      */
     public static int NVG_ALIGN_CENTER() {
         return NVG_ALIGN_CENTER;
     }
-    private static final int NVG_ALIGN_RIGHT = (int)4L;
+
+    private static final int NVG_ALIGN_RIGHT = (int) 4L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGalign.NVG_ALIGN_RIGHT = 4
+     * {@snippet lang = c : * enum NVGalign.NVG_ALIGN_RIGHT = 4
      * }
      */
     public static int NVG_ALIGN_RIGHT() {
         return NVG_ALIGN_RIGHT;
     }
-    private static final int NVG_ALIGN_TOP = (int)8L;
+
+    private static final int NVG_ALIGN_TOP = (int) 8L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGalign.NVG_ALIGN_TOP = 8
+     * {@snippet lang = c : * enum NVGalign.NVG_ALIGN_TOP = 8
      * }
      */
     public static int NVG_ALIGN_TOP() {
         return NVG_ALIGN_TOP;
     }
-    private static final int NVG_ALIGN_MIDDLE = (int)16L;
+
+    private static final int NVG_ALIGN_MIDDLE = (int) 16L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGalign.NVG_ALIGN_MIDDLE = 16
+     * {@snippet lang = c : * enum NVGalign.NVG_ALIGN_MIDDLE = 16
      * }
      */
     public static int NVG_ALIGN_MIDDLE() {
         return NVG_ALIGN_MIDDLE;
     }
-    private static final int NVG_ALIGN_BOTTOM = (int)32L;
+
+    private static final int NVG_ALIGN_BOTTOM = (int) 32L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGalign.NVG_ALIGN_BOTTOM = 32
+     * {@snippet lang = c : * enum NVGalign.NVG_ALIGN_BOTTOM = 32
      * }
      */
     public static int NVG_ALIGN_BOTTOM() {
         return NVG_ALIGN_BOTTOM;
     }
-    private static final int NVG_ALIGN_BASELINE = (int)64L;
+
+    private static final int NVG_ALIGN_BASELINE = (int) 64L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGalign.NVG_ALIGN_BASELINE = 64
+     * {@snippet lang = c : * enum NVGalign.NVG_ALIGN_BASELINE = 64
      * }
      */
     public static int NVG_ALIGN_BASELINE() {
         return NVG_ALIGN_BASELINE;
     }
-    private static final int NVG_ZERO = (int)1L;
+
+    private static final int NVG_ZERO = (int) 1L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGblendFactor.NVG_ZERO = 1
+     * {@snippet lang = c : * enum NVGblendFactor.NVG_ZERO = 1
      * }
      */
     public static int NVG_ZERO() {
         return NVG_ZERO;
     }
-    private static final int NVG_ONE = (int)2L;
+
+    private static final int NVG_ONE = (int) 2L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGblendFactor.NVG_ONE = 2
+     * {@snippet lang = c : * enum NVGblendFactor.NVG_ONE = 2
      * }
      */
     public static int NVG_ONE() {
         return NVG_ONE;
     }
-    private static final int NVG_SRC_COLOR = (int)4L;
+
+    private static final int NVG_SRC_COLOR = (int) 4L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGblendFactor.NVG_SRC_COLOR = 4
+     * {@snippet lang = c : * enum NVGblendFactor.NVG_SRC_COLOR = 4
      * }
      */
     public static int NVG_SRC_COLOR() {
         return NVG_SRC_COLOR;
     }
-    private static final int NVG_ONE_MINUS_SRC_COLOR = (int)8L;
+
+    private static final int NVG_ONE_MINUS_SRC_COLOR = (int) 8L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGblendFactor.NVG_ONE_MINUS_SRC_COLOR = 8
+     * {@snippet lang = c : * enum NVGblendFactor.NVG_ONE_MINUS_SRC_COLOR = 8
      * }
      */
     public static int NVG_ONE_MINUS_SRC_COLOR() {
         return NVG_ONE_MINUS_SRC_COLOR;
     }
-    private static final int NVG_DST_COLOR = (int)16L;
+
+    private static final int NVG_DST_COLOR = (int) 16L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGblendFactor.NVG_DST_COLOR = 16
+     * {@snippet lang = c : * enum NVGblendFactor.NVG_DST_COLOR = 16
      * }
      */
     public static int NVG_DST_COLOR() {
         return NVG_DST_COLOR;
     }
-    private static final int NVG_ONE_MINUS_DST_COLOR = (int)32L;
+
+    private static final int NVG_ONE_MINUS_DST_COLOR = (int) 32L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGblendFactor.NVG_ONE_MINUS_DST_COLOR = 32
+     * {@snippet lang = c : * enum NVGblendFactor.NVG_ONE_MINUS_DST_COLOR = 32
      * }
      */
     public static int NVG_ONE_MINUS_DST_COLOR() {
         return NVG_ONE_MINUS_DST_COLOR;
     }
-    private static final int NVG_SRC_ALPHA = (int)64L;
+
+    private static final int NVG_SRC_ALPHA = (int) 64L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGblendFactor.NVG_SRC_ALPHA = 64
+     * {@snippet lang = c : * enum NVGblendFactor.NVG_SRC_ALPHA = 64
      * }
      */
     public static int NVG_SRC_ALPHA() {
         return NVG_SRC_ALPHA;
     }
-    private static final int NVG_ONE_MINUS_SRC_ALPHA = (int)128L;
+
+    private static final int NVG_ONE_MINUS_SRC_ALPHA = (int) 128L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGblendFactor.NVG_ONE_MINUS_SRC_ALPHA = 128
+     * {@snippet lang = c : * enum NVGblendFactor.NVG_ONE_MINUS_SRC_ALPHA = 128
      * }
      */
     public static int NVG_ONE_MINUS_SRC_ALPHA() {
         return NVG_ONE_MINUS_SRC_ALPHA;
     }
-    private static final int NVG_DST_ALPHA = (int)256L;
+
+    private static final int NVG_DST_ALPHA = (int) 256L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGblendFactor.NVG_DST_ALPHA = 256
+     * {@snippet lang = c : * enum NVGblendFactor.NVG_DST_ALPHA = 256
      * }
      */
     public static int NVG_DST_ALPHA() {
         return NVG_DST_ALPHA;
     }
-    private static final int NVG_ONE_MINUS_DST_ALPHA = (int)512L;
+
+    private static final int NVG_ONE_MINUS_DST_ALPHA = (int) 512L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGblendFactor.NVG_ONE_MINUS_DST_ALPHA = 512
+     * {@snippet lang = c : * enum NVGblendFactor.NVG_ONE_MINUS_DST_ALPHA = 512
      * }
      */
     public static int NVG_ONE_MINUS_DST_ALPHA() {
         return NVG_ONE_MINUS_DST_ALPHA;
     }
-    private static final int NVG_SRC_ALPHA_SATURATE = (int)1024L;
+
+    private static final int NVG_SRC_ALPHA_SATURATE = (int) 1024L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGblendFactor.NVG_SRC_ALPHA_SATURATE = 1024
+     * {@snippet lang = c : * enum NVGblendFactor.NVG_SRC_ALPHA_SATURATE = 1024
      * }
      */
     public static int NVG_SRC_ALPHA_SATURATE() {
         return NVG_SRC_ALPHA_SATURATE;
     }
-    private static final int NVG_SOURCE_OVER = (int)0L;
+
+    private static final int NVG_SOURCE_OVER = (int) 0L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcompositeOperation.NVG_SOURCE_OVER = 0
+     * {@snippet lang = c : * enum NVGcompositeOperation.NVG_SOURCE_OVER = 0
      * }
      */
     public static int NVG_SOURCE_OVER() {
         return NVG_SOURCE_OVER;
     }
-    private static final int NVG_SOURCE_IN = (int)1L;
+
+    private static final int NVG_SOURCE_IN = (int) 1L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcompositeOperation.NVG_SOURCE_IN = 1
+     * {@snippet lang = c : * enum NVGcompositeOperation.NVG_SOURCE_IN = 1
      * }
      */
     public static int NVG_SOURCE_IN() {
         return NVG_SOURCE_IN;
     }
-    private static final int NVG_SOURCE_OUT = (int)2L;
+
+    private static final int NVG_SOURCE_OUT = (int) 2L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcompositeOperation.NVG_SOURCE_OUT = 2
+     * {@snippet lang = c : * enum NVGcompositeOperation.NVG_SOURCE_OUT = 2
      * }
      */
     public static int NVG_SOURCE_OUT() {
         return NVG_SOURCE_OUT;
     }
-    private static final int NVG_ATOP = (int)3L;
+
+    private static final int NVG_ATOP = (int) 3L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcompositeOperation.NVG_ATOP = 3
+     * {@snippet lang = c : * enum NVGcompositeOperation.NVG_ATOP = 3
      * }
      */
     public static int NVG_ATOP() {
         return NVG_ATOP;
     }
-    private static final int NVG_DESTINATION_OVER = (int)4L;
+
+    private static final int NVG_DESTINATION_OVER = (int) 4L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcompositeOperation.NVG_DESTINATION_OVER = 4
+     * {@snippet lang = c : * enum NVGcompositeOperation.NVG_DESTINATION_OVER = 4
      * }
      */
     public static int NVG_DESTINATION_OVER() {
         return NVG_DESTINATION_OVER;
     }
-    private static final int NVG_DESTINATION_IN = (int)5L;
+
+    private static final int NVG_DESTINATION_IN = (int) 5L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcompositeOperation.NVG_DESTINATION_IN = 5
+     * {@snippet lang = c : * enum NVGcompositeOperation.NVG_DESTINATION_IN = 5
      * }
      */
     public static int NVG_DESTINATION_IN() {
         return NVG_DESTINATION_IN;
     }
-    private static final int NVG_DESTINATION_OUT = (int)6L;
+
+    private static final int NVG_DESTINATION_OUT = (int) 6L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcompositeOperation.NVG_DESTINATION_OUT = 6
+     * {@snippet lang = c : * enum NVGcompositeOperation.NVG_DESTINATION_OUT = 6
      * }
      */
     public static int NVG_DESTINATION_OUT() {
         return NVG_DESTINATION_OUT;
     }
-    private static final int NVG_DESTINATION_ATOP = (int)7L;
+
+    private static final int NVG_DESTINATION_ATOP = (int) 7L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcompositeOperation.NVG_DESTINATION_ATOP = 7
+     * {@snippet lang = c : * enum NVGcompositeOperation.NVG_DESTINATION_ATOP = 7
      * }
      */
     public static int NVG_DESTINATION_ATOP() {
         return NVG_DESTINATION_ATOP;
     }
-    private static final int NVG_LIGHTER = (int)8L;
+
+    private static final int NVG_LIGHTER = (int) 8L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcompositeOperation.NVG_LIGHTER = 8
+     * {@snippet lang = c : * enum NVGcompositeOperation.NVG_LIGHTER = 8
      * }
      */
     public static int NVG_LIGHTER() {
         return NVG_LIGHTER;
     }
-    private static final int NVG_COPY = (int)9L;
+
+    private static final int NVG_COPY = (int) 9L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcompositeOperation.NVG_COPY = 9
+     * {@snippet lang = c : * enum NVGcompositeOperation.NVG_COPY = 9
      * }
      */
     public static int NVG_COPY() {
         return NVG_COPY;
     }
-    private static final int NVG_XOR = (int)10L;
+
+    private static final int NVG_XOR = (int) 10L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcompositeOperation.NVG_XOR = 10
+     * {@snippet lang = c : * enum NVGcompositeOperation.NVG_XOR = 10
      * }
      */
     public static int NVG_XOR() {
         return NVG_XOR;
     }
-    private static final int NVG_IMAGE_GENERATE_MIPMAPS = (int)1L;
+
+    private static final int NVG_IMAGE_GENERATE_MIPMAPS = (int) 1L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGimageFlags.NVG_IMAGE_GENERATE_MIPMAPS = 1
+     * {@snippet lang = c : * enum NVGimageFlags.NVG_IMAGE_GENERATE_MIPMAPS = 1
      * }
      */
     public static int NVG_IMAGE_GENERATE_MIPMAPS() {
         return NVG_IMAGE_GENERATE_MIPMAPS;
     }
-    private static final int NVG_IMAGE_REPEATX = (int)2L;
+
+    private static final int NVG_IMAGE_REPEATX = (int) 2L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGimageFlags.NVG_IMAGE_REPEATX = 2
+     * {@snippet lang = c : * enum NVGimageFlags.NVG_IMAGE_REPEATX = 2
      * }
      */
     public static int NVG_IMAGE_REPEATX() {
         return NVG_IMAGE_REPEATX;
     }
-    private static final int NVG_IMAGE_REPEATY = (int)4L;
+
+    private static final int NVG_IMAGE_REPEATY = (int) 4L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGimageFlags.NVG_IMAGE_REPEATY = 4
+     * {@snippet lang = c : * enum NVGimageFlags.NVG_IMAGE_REPEATY = 4
      * }
      */
     public static int NVG_IMAGE_REPEATY() {
         return NVG_IMAGE_REPEATY;
     }
-    private static final int NVG_IMAGE_FLIPY = (int)8L;
+
+    private static final int NVG_IMAGE_FLIPY = (int) 8L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGimageFlags.NVG_IMAGE_FLIPY = 8
+     * {@snippet lang = c : * enum NVGimageFlags.NVG_IMAGE_FLIPY = 8
      * }
      */
     public static int NVG_IMAGE_FLIPY() {
         return NVG_IMAGE_FLIPY;
     }
-    private static final int NVG_IMAGE_PREMULTIPLIED = (int)16L;
+
+    private static final int NVG_IMAGE_PREMULTIPLIED = (int) 16L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGimageFlags.NVG_IMAGE_PREMULTIPLIED = 16
+     * {@snippet lang = c : * enum NVGimageFlags.NVG_IMAGE_PREMULTIPLIED = 16
      * }
      */
     public static int NVG_IMAGE_PREMULTIPLIED() {
         return NVG_IMAGE_PREMULTIPLIED;
     }
-    private static final int NVG_IMAGE_NEAREST = (int)32L;
+
+    private static final int NVG_IMAGE_NEAREST = (int) 32L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGimageFlags.NVG_IMAGE_NEAREST = 32
+     * {@snippet lang = c : * enum NVGimageFlags.NVG_IMAGE_NEAREST = 32
      * }
      */
     public static int NVG_IMAGE_NEAREST() {
@@ -417,11 +456,10 @@ public class NVG extends NVG$shared {
 
     private static class nvgBeginFrame {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgBeginFrame");
 
@@ -430,8 +468,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgBeginFrame(NVGcontext *ctx, float windowWidth, float windowHeight, float devicePixelRatio)
+     * {@snippet lang = c
+     * : * void nvgBeginFrame(NVGcontext *ctx, float windowWidth, float windowHeight, float devicePixelRatio)
      * }
      */
     public static FunctionDescriptor nvgBeginFrame$descriptor() {
@@ -440,8 +478,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgBeginFrame(NVGcontext *ctx, float windowWidth, float windowHeight, float devicePixelRatio)
+     * {@snippet lang = c
+     * : * void nvgBeginFrame(NVGcontext *ctx, float windowWidth, float windowHeight, float devicePixelRatio)
      * }
      */
     public static MethodHandle nvgBeginFrame$handle() {
@@ -450,8 +488,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgBeginFrame(NVGcontext *ctx, float windowWidth, float windowHeight, float devicePixelRatio)
+     * {@snippet lang = c
+     * : * void nvgBeginFrame(NVGcontext *ctx, float windowWidth, float windowHeight, float devicePixelRatio)
      * }
      */
     public static MemorySegment nvgBeginFrame$address() {
@@ -459,8 +497,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgBeginFrame(NVGcontext *ctx, float windowWidth, float windowHeight, float devicePixelRatio)
+     * {@snippet lang = c
+     * : * void nvgBeginFrame(NVGcontext *ctx, float windowWidth, float windowHeight, float devicePixelRatio)
      * }
      */
     public static void nvgBeginFrame(MemorySegment ctx, float windowWidth, float windowHeight, float devicePixelRatio) {
@@ -471,16 +509,15 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, windowWidth, windowHeight, devicePixelRatio);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgCancelFrame {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgCancelFrame");
 
@@ -489,8 +526,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgCancelFrame(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgCancelFrame(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgCancelFrame$descriptor() {
@@ -499,8 +535,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgCancelFrame(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgCancelFrame(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgCancelFrame$handle() {
@@ -509,8 +544,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgCancelFrame(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgCancelFrame(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgCancelFrame$address() {
@@ -518,8 +552,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgCancelFrame(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgCancelFrame(NVGcontext *ctx)
      * }
      */
     public static void nvgCancelFrame(MemorySegment ctx) {
@@ -530,16 +563,15 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgEndFrame {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgEndFrame");
 
@@ -548,8 +580,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgEndFrame(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgEndFrame(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgEndFrame$descriptor() {
@@ -558,8 +589,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgEndFrame(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgEndFrame(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgEndFrame$handle() {
@@ -568,8 +598,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgEndFrame(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgEndFrame(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgEndFrame$address() {
@@ -577,8 +606,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgEndFrame(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgEndFrame(NVGcontext *ctx)
      * }
      */
     public static void nvgEndFrame(MemorySegment ctx) {
@@ -589,17 +617,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgGlobalCompositeOperation {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgGlobalCompositeOperation");
 
@@ -608,8 +635,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgGlobalCompositeOperation(NVGcontext *ctx, int op)
+     * {@snippet lang = c
+     * : * void nvgGlobalCompositeOperation(NVGcontext *ctx, int op)
      * }
      */
     public static FunctionDescriptor nvgGlobalCompositeOperation$descriptor() {
@@ -618,8 +645,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgGlobalCompositeOperation(NVGcontext *ctx, int op)
+     * {@snippet lang = c
+     * : * void nvgGlobalCompositeOperation(NVGcontext *ctx, int op)
      * }
      */
     public static MethodHandle nvgGlobalCompositeOperation$handle() {
@@ -628,8 +655,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgGlobalCompositeOperation(NVGcontext *ctx, int op)
+     * {@snippet lang = c
+     * : * void nvgGlobalCompositeOperation(NVGcontext *ctx, int op)
      * }
      */
     public static MemorySegment nvgGlobalCompositeOperation$address() {
@@ -637,8 +664,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgGlobalCompositeOperation(NVGcontext *ctx, int op)
+     * {@snippet lang = c
+     * : * void nvgGlobalCompositeOperation(NVGcontext *ctx, int op)
      * }
      */
     public static void nvgGlobalCompositeOperation(MemorySegment ctx, int op) {
@@ -649,18 +676,17 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, op);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgGlobalCompositeBlendFunc {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_INT,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgGlobalCompositeBlendFunc");
 
@@ -669,8 +695,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgGlobalCompositeBlendFunc(NVGcontext *ctx, int sfactor, int dfactor)
+     * {@snippet lang = c
+     * : * void nvgGlobalCompositeBlendFunc(NVGcontext *ctx, int sfactor, int dfactor)
      * }
      */
     public static FunctionDescriptor nvgGlobalCompositeBlendFunc$descriptor() {
@@ -679,8 +705,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgGlobalCompositeBlendFunc(NVGcontext *ctx, int sfactor, int dfactor)
+     * {@snippet lang = c
+     * : * void nvgGlobalCompositeBlendFunc(NVGcontext *ctx, int sfactor, int dfactor)
      * }
      */
     public static MethodHandle nvgGlobalCompositeBlendFunc$handle() {
@@ -689,8 +715,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgGlobalCompositeBlendFunc(NVGcontext *ctx, int sfactor, int dfactor)
+     * {@snippet lang = c
+     * : * void nvgGlobalCompositeBlendFunc(NVGcontext *ctx, int sfactor, int dfactor)
      * }
      */
     public static MemorySegment nvgGlobalCompositeBlendFunc$address() {
@@ -698,8 +724,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgGlobalCompositeBlendFunc(NVGcontext *ctx, int sfactor, int dfactor)
+     * {@snippet lang = c
+     * : * void nvgGlobalCompositeBlendFunc(NVGcontext *ctx, int sfactor, int dfactor)
      * }
      */
     public static void nvgGlobalCompositeBlendFunc(MemorySegment ctx, int sfactor, int dfactor) {
@@ -710,30 +736,30 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, sfactor, dfactor);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgGlobalCompositeBlendFuncSeparate {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT,
-            NVG.C_INT,
-            NVG.C_INT,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_INT,
+                NVG.C_INT,
+                NVG.C_INT,
+                NVG.C_INT);
 
-        public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgGlobalCompositeBlendFuncSeparate");
+        public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP
+                .findOrThrow("nvgGlobalCompositeBlendFuncSeparate");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgGlobalCompositeBlendFuncSeparate(NVGcontext *ctx, int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
+     * {@snippet lang = c
+     * : * void nvgGlobalCompositeBlendFuncSeparate(NVGcontext *ctx, int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
      * }
      */
     public static FunctionDescriptor nvgGlobalCompositeBlendFuncSeparate$descriptor() {
@@ -742,8 +768,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgGlobalCompositeBlendFuncSeparate(NVGcontext *ctx, int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
+     * {@snippet lang = c
+     * : * void nvgGlobalCompositeBlendFuncSeparate(NVGcontext *ctx, int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
      * }
      */
     public static MethodHandle nvgGlobalCompositeBlendFuncSeparate$handle() {
@@ -752,8 +778,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgGlobalCompositeBlendFuncSeparate(NVGcontext *ctx, int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
+     * {@snippet lang = c
+     * : * void nvgGlobalCompositeBlendFuncSeparate(NVGcontext *ctx, int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
      * }
      */
     public static MemorySegment nvgGlobalCompositeBlendFuncSeparate$address() {
@@ -761,11 +787,12 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgGlobalCompositeBlendFuncSeparate(NVGcontext *ctx, int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
+     * {@snippet lang = c
+     * : * void nvgGlobalCompositeBlendFuncSeparate(NVGcontext *ctx, int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
      * }
      */
-    public static void nvgGlobalCompositeBlendFuncSeparate(MemorySegment ctx, int srcRGB, int dstRGB, int srcAlpha, int dstAlpha) {
+    public static void nvgGlobalCompositeBlendFuncSeparate(MemorySegment ctx, int srcRGB, int dstRGB, int srcAlpha,
+            int dstAlpha) {
         var mh$ = nvgGlobalCompositeBlendFuncSeparate.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
@@ -773,19 +800,18 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, srcRGB, dstRGB, srcAlpha, dstAlpha);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgRGB {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGcolor.layout(),
-            NVG.C_CHAR,
-            NVG.C_CHAR,
-            NVG.C_CHAR
-        );
+                NVGcolor.layout(),
+                NVG.C_CHAR,
+                NVG.C_CHAR,
+                NVG.C_CHAR);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgRGB");
 
@@ -794,8 +820,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGcolor nvgRGB(unsigned char r, unsigned char g, unsigned char b)
+     * {@snippet lang = c
+     * : * NVGcolor nvgRGB(unsigned char r, unsigned char g, unsigned char b)
      * }
      */
     public static FunctionDescriptor nvgRGB$descriptor() {
@@ -804,8 +830,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGcolor nvgRGB(unsigned char r, unsigned char g, unsigned char b)
+     * {@snippet lang = c
+     * : * NVGcolor nvgRGB(unsigned char r, unsigned char g, unsigned char b)
      * }
      */
     public static MethodHandle nvgRGB$handle() {
@@ -814,8 +840,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGcolor nvgRGB(unsigned char r, unsigned char g, unsigned char b)
+     * {@snippet lang = c
+     * : * NVGcolor nvgRGB(unsigned char r, unsigned char g, unsigned char b)
      * }
      */
     public static MemorySegment nvgRGB$address() {
@@ -823,8 +849,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGcolor nvgRGB(unsigned char r, unsigned char g, unsigned char b)
+     * {@snippet lang = c
+     * : * NVGcolor nvgRGB(unsigned char r, unsigned char g, unsigned char b)
      * }
      */
     public static MemorySegment nvgRGB(SegmentAllocator allocator, byte r, byte g, byte b) {
@@ -833,21 +859,20 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgRGB", allocator, r, g, b);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, r, g, b);
+            return (MemorySegment) mh$.invokeExact(allocator, r, g, b);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgRGBf {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGcolor.layout(),
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVGcolor.layout(),
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgRGBf");
 
@@ -856,8 +881,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBf(float r, float g, float b)
+     * {@snippet lang = c : * NVGcolor nvgRGBf(float r, float g, float b)
      * }
      */
     public static FunctionDescriptor nvgRGBf$descriptor() {
@@ -866,8 +890,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBf(float r, float g, float b)
+     * {@snippet lang = c : * NVGcolor nvgRGBf(float r, float g, float b)
      * }
      */
     public static MethodHandle nvgRGBf$handle() {
@@ -876,8 +899,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBf(float r, float g, float b)
+     * {@snippet lang = c : * NVGcolor nvgRGBf(float r, float g, float b)
      * }
      */
     public static MemorySegment nvgRGBf$address() {
@@ -885,8 +907,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBf(float r, float g, float b)
+     * {@snippet lang = c : * NVGcolor nvgRGBf(float r, float g, float b)
      * }
      */
     public static MemorySegment nvgRGBf(SegmentAllocator allocator, float r, float g, float b) {
@@ -895,22 +916,21 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgRGBf", allocator, r, g, b);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, r, g, b);
+            return (MemorySegment) mh$.invokeExact(allocator, r, g, b);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgRGBA {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGcolor.layout(),
-            NVG.C_CHAR,
-            NVG.C_CHAR,
-            NVG.C_CHAR,
-            NVG.C_CHAR
-        );
+                NVGcolor.layout(),
+                NVG.C_CHAR,
+                NVG.C_CHAR,
+                NVG.C_CHAR,
+                NVG.C_CHAR);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgRGBA");
 
@@ -919,8 +939,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+     * {@snippet lang = c
+     * : * NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
      * }
      */
     public static FunctionDescriptor nvgRGBA$descriptor() {
@@ -929,8 +949,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+     * {@snippet lang = c
+     * : * NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
      * }
      */
     public static MethodHandle nvgRGBA$handle() {
@@ -939,33 +959,33 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+     * {@snippet lang = c
+     * : * NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
      * }
      */
     public static MemorySegment nvgRGBA$address() {
         return nvgRGBA.ADDR;
     }
 
-
     /**
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+     * {@snippet lang = c
+     * : * NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
      * }
+     * 
      * @param allocator the segment allocator to use
-     * @param r 
+     * @param r
      * @param g
      * @param b
      * @param a
      * @return
      */
     public static MemorySegment nvgRGBA(SegmentAllocator allocator, int r, int g, int b, int a) {
-        return nvgRGBA(allocator, (byte)r, (byte)g, (byte)b, (byte)a);
+        return nvgRGBA(allocator, (byte) r, (byte) g, (byte) b, (byte) a);
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+     * {@snippet lang = c
+     * : * NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
      * }
      */
     public static MemorySegment nvgRGBA(SegmentAllocator allocator, byte r, byte g, byte b, byte a) {
@@ -974,22 +994,21 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgRGBA", allocator, r, g, b, a);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, r, g, b, a);
+            return (MemorySegment) mh$.invokeExact(allocator, r, g, b, a);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgRGBAf {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGcolor.layout(),
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVGcolor.layout(),
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgRGBAf");
 
@@ -998,8 +1017,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBAf(float r, float g, float b, float a)
+     * {@snippet lang = c : * NVGcolor nvgRGBAf(float r, float g, float b, float a)
      * }
      */
     public static FunctionDescriptor nvgRGBAf$descriptor() {
@@ -1008,8 +1026,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBAf(float r, float g, float b, float a)
+     * {@snippet lang = c : * NVGcolor nvgRGBAf(float r, float g, float b, float a)
      * }
      */
     public static MethodHandle nvgRGBAf$handle() {
@@ -1018,8 +1035,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBAf(float r, float g, float b, float a)
+     * {@snippet lang = c : * NVGcolor nvgRGBAf(float r, float g, float b, float a)
      * }
      */
     public static MemorySegment nvgRGBAf$address() {
@@ -1027,8 +1043,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGcolor nvgRGBAf(float r, float g, float b, float a)
+     * {@snippet lang = c : * NVGcolor nvgRGBAf(float r, float g, float b, float a)
      * }
      */
     public static MemorySegment nvgRGBAf(SegmentAllocator allocator, float r, float g, float b, float a) {
@@ -1037,21 +1052,20 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgRGBAf", allocator, r, g, b, a);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, r, g, b, a);
+            return (MemorySegment) mh$.invokeExact(allocator, r, g, b, a);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgLerpRGBA {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGcolor.layout(),
-            NVGcolor.layout(),
-            NVGcolor.layout(),
-            NVG.C_FLOAT
-        );
+                NVGcolor.layout(),
+                NVGcolor.layout(),
+                NVGcolor.layout(),
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgLerpRGBA");
 
@@ -1060,8 +1074,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGcolor nvgLerpRGBA(NVGcolor c0, NVGcolor c1, float u)
+     * {@snippet lang = c
+     * : * NVGcolor nvgLerpRGBA(NVGcolor c0, NVGcolor c1, float u)
      * }
      */
     public static FunctionDescriptor nvgLerpRGBA$descriptor() {
@@ -1070,8 +1084,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGcolor nvgLerpRGBA(NVGcolor c0, NVGcolor c1, float u)
+     * {@snippet lang = c
+     * : * NVGcolor nvgLerpRGBA(NVGcolor c0, NVGcolor c1, float u)
      * }
      */
     public static MethodHandle nvgLerpRGBA$handle() {
@@ -1080,8 +1094,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGcolor nvgLerpRGBA(NVGcolor c0, NVGcolor c1, float u)
+     * {@snippet lang = c
+     * : * NVGcolor nvgLerpRGBA(NVGcolor c0, NVGcolor c1, float u)
      * }
      */
     public static MemorySegment nvgLerpRGBA$address() {
@@ -1089,8 +1103,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGcolor nvgLerpRGBA(NVGcolor c0, NVGcolor c1, float u)
+     * {@snippet lang = c
+     * : * NVGcolor nvgLerpRGBA(NVGcolor c0, NVGcolor c1, float u)
      * }
      */
     public static MemorySegment nvgLerpRGBA(SegmentAllocator allocator, MemorySegment c0, MemorySegment c1, float u) {
@@ -1099,20 +1113,19 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgLerpRGBA", allocator, c0, c1, u);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, c0, c1, u);
+            return (MemorySegment) mh$.invokeExact(allocator, c0, c1, u);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransRGBA {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGcolor.layout(),
-            NVGcolor.layout(),
-            NVG.C_CHAR
-        );
+                NVGcolor.layout(),
+                NVGcolor.layout(),
+                NVG.C_CHAR);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransRGBA");
 
@@ -1121,8 +1134,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGcolor nvgTransRGBA(NVGcolor c0, unsigned char a)
+     * {@snippet lang = c : * NVGcolor nvgTransRGBA(NVGcolor c0, unsigned char a)
      * }
      */
     public static FunctionDescriptor nvgTransRGBA$descriptor() {
@@ -1131,8 +1143,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGcolor nvgTransRGBA(NVGcolor c0, unsigned char a)
+     * {@snippet lang = c : * NVGcolor nvgTransRGBA(NVGcolor c0, unsigned char a)
      * }
      */
     public static MethodHandle nvgTransRGBA$handle() {
@@ -1141,8 +1152,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGcolor nvgTransRGBA(NVGcolor c0, unsigned char a)
+     * {@snippet lang = c : * NVGcolor nvgTransRGBA(NVGcolor c0, unsigned char a)
      * }
      */
     public static MemorySegment nvgTransRGBA$address() {
@@ -1150,8 +1160,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGcolor nvgTransRGBA(NVGcolor c0, unsigned char a)
+     * {@snippet lang = c : * NVGcolor nvgTransRGBA(NVGcolor c0, unsigned char a)
      * }
      */
     public static MemorySegment nvgTransRGBA(SegmentAllocator allocator, MemorySegment c0, byte a) {
@@ -1160,20 +1169,19 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgTransRGBA", allocator, c0, a);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, c0, a);
+            return (MemorySegment) mh$.invokeExact(allocator, c0, a);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransRGBAf {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGcolor.layout(),
-            NVGcolor.layout(),
-            NVG.C_FLOAT
-        );
+                NVGcolor.layout(),
+                NVGcolor.layout(),
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransRGBAf");
 
@@ -1182,8 +1190,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGcolor nvgTransRGBAf(NVGcolor c0, float a)
+     * {@snippet lang = c : * NVGcolor nvgTransRGBAf(NVGcolor c0, float a)
      * }
      */
     public static FunctionDescriptor nvgTransRGBAf$descriptor() {
@@ -1192,8 +1199,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGcolor nvgTransRGBAf(NVGcolor c0, float a)
+     * {@snippet lang = c : * NVGcolor nvgTransRGBAf(NVGcolor c0, float a)
      * }
      */
     public static MethodHandle nvgTransRGBAf$handle() {
@@ -1202,8 +1208,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGcolor nvgTransRGBAf(NVGcolor c0, float a)
+     * {@snippet lang = c : * NVGcolor nvgTransRGBAf(NVGcolor c0, float a)
      * }
      */
     public static MemorySegment nvgTransRGBAf$address() {
@@ -1211,8 +1216,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGcolor nvgTransRGBAf(NVGcolor c0, float a)
+     * {@snippet lang = c : * NVGcolor nvgTransRGBAf(NVGcolor c0, float a)
      * }
      */
     public static MemorySegment nvgTransRGBAf(SegmentAllocator allocator, MemorySegment c0, float a) {
@@ -1221,21 +1225,20 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgTransRGBAf", allocator, c0, a);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, c0, a);
+            return (MemorySegment) mh$.invokeExact(allocator, c0, a);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgHSL {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGcolor.layout(),
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVGcolor.layout(),
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgHSL");
 
@@ -1244,8 +1247,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGcolor nvgHSL(float h, float s, float l)
+     * {@snippet lang = c : * NVGcolor nvgHSL(float h, float s, float l)
      * }
      */
     public static FunctionDescriptor nvgHSL$descriptor() {
@@ -1254,8 +1256,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGcolor nvgHSL(float h, float s, float l)
+     * {@snippet lang = c : * NVGcolor nvgHSL(float h, float s, float l)
      * }
      */
     public static MethodHandle nvgHSL$handle() {
@@ -1264,8 +1265,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGcolor nvgHSL(float h, float s, float l)
+     * {@snippet lang = c : * NVGcolor nvgHSL(float h, float s, float l)
      * }
      */
     public static MemorySegment nvgHSL$address() {
@@ -1273,8 +1273,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGcolor nvgHSL(float h, float s, float l)
+     * {@snippet lang = c : * NVGcolor nvgHSL(float h, float s, float l)
      * }
      */
     public static MemorySegment nvgHSL(SegmentAllocator allocator, float h, float s, float l) {
@@ -1283,22 +1282,21 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgHSL", allocator, h, s, l);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, h, s, l);
+            return (MemorySegment) mh$.invokeExact(allocator, h, s, l);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgHSLA {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGcolor.layout(),
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_CHAR
-        );
+                NVGcolor.layout(),
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_CHAR);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgHSLA");
 
@@ -1307,8 +1305,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGcolor nvgHSLA(float h, float s, float l, unsigned char a)
+     * {@snippet lang = c
+     * : * NVGcolor nvgHSLA(float h, float s, float l, unsigned char a)
      * }
      */
     public static FunctionDescriptor nvgHSLA$descriptor() {
@@ -1317,8 +1315,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGcolor nvgHSLA(float h, float s, float l, unsigned char a)
+     * {@snippet lang = c
+     * : * NVGcolor nvgHSLA(float h, float s, float l, unsigned char a)
      * }
      */
     public static MethodHandle nvgHSLA$handle() {
@@ -1327,14 +1325,13 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGcolor nvgHSLA(float h, float s, float l, unsigned char a)
+     * {@snippet lang = c
+     * : * NVGcolor nvgHSLA(float h, float s, float l, unsigned char a)
      * }
      */
     public static MemorySegment nvgHSLA$address() {
         return nvgHSLA.ADDR;
     }
-
 
     /**
      * 
@@ -1345,13 +1342,13 @@ public class NVG extends NVG$shared {
      * @param a
      * @return
      */
-    public static MemorySegment nvgHSLA(SegmentAllocator allocator, float h, float s, float l, int a){
-        return nvgHSLA(allocator, h, s, l, (byte)a);
+    public static MemorySegment nvgHSLA(SegmentAllocator allocator, float h, float s, float l, int a) {
+        return nvgHSLA(allocator, h, s, l, (byte) a);
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGcolor nvgHSLA(float h, float s, float l, unsigned char a)
+     * {@snippet lang = c
+     * : * NVGcolor nvgHSLA(float h, float s, float l, unsigned char a)
      * }
      */
     public static MemorySegment nvgHSLA(SegmentAllocator allocator, float h, float s, float l, byte a) {
@@ -1360,18 +1357,17 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgHSLA", allocator, h, s, l, a);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, h, s, l, a);
+            return (MemorySegment) mh$.invokeExact(allocator, h, s, l, a);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgSave {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgSave");
 
@@ -1380,8 +1376,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgSave(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgSave(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgSave$descriptor() {
@@ -1390,8 +1385,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgSave(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgSave(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgSave$handle() {
@@ -1400,8 +1394,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgSave(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgSave(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgSave$address() {
@@ -1409,8 +1402,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgSave(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgSave(NVGcontext *ctx)
      * }
      */
     public static void nvgSave(MemorySegment ctx) {
@@ -1421,16 +1413,15 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgRestore {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgRestore");
 
@@ -1439,8 +1430,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgRestore(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgRestore(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgRestore$descriptor() {
@@ -1449,8 +1439,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgRestore(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgRestore(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgRestore$handle() {
@@ -1459,8 +1448,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgRestore(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgRestore(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgRestore$address() {
@@ -1468,8 +1456,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgRestore(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgRestore(NVGcontext *ctx)
      * }
      */
     public static void nvgRestore(MemorySegment ctx) {
@@ -1480,16 +1467,15 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgReset {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgReset");
 
@@ -1498,8 +1484,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgReset(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgReset(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgReset$descriptor() {
@@ -1508,8 +1493,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgReset(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgReset(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgReset$handle() {
@@ -1518,8 +1502,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgReset(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgReset(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgReset$address() {
@@ -1527,8 +1510,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgReset(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgReset(NVGcontext *ctx)
      * }
      */
     public static void nvgReset(MemorySegment ctx) {
@@ -1539,17 +1521,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgShapeAntiAlias {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgShapeAntiAlias");
 
@@ -1558,8 +1539,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgShapeAntiAlias(NVGcontext *ctx, int enabled)
+     * {@snippet lang = c : * void nvgShapeAntiAlias(NVGcontext *ctx, int enabled)
      * }
      */
     public static FunctionDescriptor nvgShapeAntiAlias$descriptor() {
@@ -1568,8 +1548,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgShapeAntiAlias(NVGcontext *ctx, int enabled)
+     * {@snippet lang = c : * void nvgShapeAntiAlias(NVGcontext *ctx, int enabled)
      * }
      */
     public static MethodHandle nvgShapeAntiAlias$handle() {
@@ -1578,8 +1557,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgShapeAntiAlias(NVGcontext *ctx, int enabled)
+     * {@snippet lang = c : * void nvgShapeAntiAlias(NVGcontext *ctx, int enabled)
      * }
      */
     public static MemorySegment nvgShapeAntiAlias$address() {
@@ -1587,8 +1565,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgShapeAntiAlias(NVGcontext *ctx, int enabled)
+     * {@snippet lang = c : * void nvgShapeAntiAlias(NVGcontext *ctx, int enabled)
      * }
      */
     public static void nvgShapeAntiAlias(MemorySegment ctx, int enabled) {
@@ -1599,17 +1576,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, enabled);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgStrokeColor {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVGcolor.layout()
-        );
+                NVG.C_POINTER,
+                NVGcolor.layout());
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgStrokeColor");
 
@@ -1618,8 +1594,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgStrokeColor(NVGcontext *ctx, NVGcolor color)
+     * {@snippet lang = c : * void nvgStrokeColor(NVGcontext *ctx, NVGcolor color)
      * }
      */
     public static FunctionDescriptor nvgStrokeColor$descriptor() {
@@ -1628,8 +1603,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgStrokeColor(NVGcontext *ctx, NVGcolor color)
+     * {@snippet lang = c : * void nvgStrokeColor(NVGcontext *ctx, NVGcolor color)
      * }
      */
     public static MethodHandle nvgStrokeColor$handle() {
@@ -1638,8 +1612,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgStrokeColor(NVGcontext *ctx, NVGcolor color)
+     * {@snippet lang = c : * void nvgStrokeColor(NVGcontext *ctx, NVGcolor color)
      * }
      */
     public static MemorySegment nvgStrokeColor$address() {
@@ -1647,8 +1620,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgStrokeColor(NVGcontext *ctx, NVGcolor color)
+     * {@snippet lang = c : * void nvgStrokeColor(NVGcontext *ctx, NVGcolor color)
      * }
      */
     public static void nvgStrokeColor(MemorySegment ctx, MemorySegment color) {
@@ -1659,17 +1631,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, color);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgStrokePaint {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVGpaint.layout()
-        );
+                NVG.C_POINTER,
+                NVGpaint.layout());
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgStrokePaint");
 
@@ -1678,8 +1649,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgStrokePaint(NVGcontext *ctx, NVGpaint paint)
+     * {@snippet lang = c : * void nvgStrokePaint(NVGcontext *ctx, NVGpaint paint)
      * }
      */
     public static FunctionDescriptor nvgStrokePaint$descriptor() {
@@ -1688,8 +1658,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgStrokePaint(NVGcontext *ctx, NVGpaint paint)
+     * {@snippet lang = c : * void nvgStrokePaint(NVGcontext *ctx, NVGpaint paint)
      * }
      */
     public static MethodHandle nvgStrokePaint$handle() {
@@ -1698,8 +1667,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgStrokePaint(NVGcontext *ctx, NVGpaint paint)
+     * {@snippet lang = c : * void nvgStrokePaint(NVGcontext *ctx, NVGpaint paint)
      * }
      */
     public static MemorySegment nvgStrokePaint$address() {
@@ -1707,8 +1675,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgStrokePaint(NVGcontext *ctx, NVGpaint paint)
+     * {@snippet lang = c : * void nvgStrokePaint(NVGcontext *ctx, NVGpaint paint)
      * }
      */
     public static void nvgStrokePaint(MemorySegment ctx, MemorySegment paint) {
@@ -1719,17 +1686,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, paint);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgFillColor {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVGcolor.layout()
-        );
+                NVG.C_POINTER,
+                NVGcolor.layout());
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgFillColor");
 
@@ -1738,8 +1704,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgFillColor(NVGcontext *ctx, NVGcolor color)
+     * {@snippet lang = c : * void nvgFillColor(NVGcontext *ctx, NVGcolor color)
      * }
      */
     public static FunctionDescriptor nvgFillColor$descriptor() {
@@ -1748,8 +1713,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgFillColor(NVGcontext *ctx, NVGcolor color)
+     * {@snippet lang = c : * void nvgFillColor(NVGcontext *ctx, NVGcolor color)
      * }
      */
     public static MethodHandle nvgFillColor$handle() {
@@ -1758,8 +1722,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgFillColor(NVGcontext *ctx, NVGcolor color)
+     * {@snippet lang = c : * void nvgFillColor(NVGcontext *ctx, NVGcolor color)
      * }
      */
     public static MemorySegment nvgFillColor$address() {
@@ -1767,8 +1730,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgFillColor(NVGcontext *ctx, NVGcolor color)
+     * {@snippet lang = c : * void nvgFillColor(NVGcontext *ctx, NVGcolor color)
      * }
      */
     public static void nvgFillColor(MemorySegment ctx, MemorySegment color) {
@@ -1779,17 +1741,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, color);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgFillPaint {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVGpaint.layout()
-        );
+                NVG.C_POINTER,
+                NVGpaint.layout());
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgFillPaint");
 
@@ -1798,8 +1759,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgFillPaint(NVGcontext *ctx, NVGpaint paint)
+     * {@snippet lang = c : * void nvgFillPaint(NVGcontext *ctx, NVGpaint paint)
      * }
      */
     public static FunctionDescriptor nvgFillPaint$descriptor() {
@@ -1808,8 +1768,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgFillPaint(NVGcontext *ctx, NVGpaint paint)
+     * {@snippet lang = c : * void nvgFillPaint(NVGcontext *ctx, NVGpaint paint)
      * }
      */
     public static MethodHandle nvgFillPaint$handle() {
@@ -1818,8 +1777,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgFillPaint(NVGcontext *ctx, NVGpaint paint)
+     * {@snippet lang = c : * void nvgFillPaint(NVGcontext *ctx, NVGpaint paint)
      * }
      */
     public static MemorySegment nvgFillPaint$address() {
@@ -1827,8 +1785,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgFillPaint(NVGcontext *ctx, NVGpaint paint)
+     * {@snippet lang = c : * void nvgFillPaint(NVGcontext *ctx, NVGpaint paint)
      * }
      */
     public static void nvgFillPaint(MemorySegment ctx, MemorySegment paint) {
@@ -1839,17 +1796,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, paint);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgMiterLimit {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgMiterLimit");
 
@@ -1858,8 +1814,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgMiterLimit(NVGcontext *ctx, float limit)
+     * {@snippet lang = c : * void nvgMiterLimit(NVGcontext *ctx, float limit)
      * }
      */
     public static FunctionDescriptor nvgMiterLimit$descriptor() {
@@ -1868,8 +1823,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgMiterLimit(NVGcontext *ctx, float limit)
+     * {@snippet lang = c : * void nvgMiterLimit(NVGcontext *ctx, float limit)
      * }
      */
     public static MethodHandle nvgMiterLimit$handle() {
@@ -1878,8 +1832,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgMiterLimit(NVGcontext *ctx, float limit)
+     * {@snippet lang = c : * void nvgMiterLimit(NVGcontext *ctx, float limit)
      * }
      */
     public static MemorySegment nvgMiterLimit$address() {
@@ -1887,8 +1840,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgMiterLimit(NVGcontext *ctx, float limit)
+     * {@snippet lang = c : * void nvgMiterLimit(NVGcontext *ctx, float limit)
      * }
      */
     public static void nvgMiterLimit(MemorySegment ctx, float limit) {
@@ -1899,17 +1851,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, limit);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgStrokeWidth {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgStrokeWidth");
 
@@ -1918,8 +1869,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgStrokeWidth(NVGcontext *ctx, float size)
+     * {@snippet lang = c : * void nvgStrokeWidth(NVGcontext *ctx, float size)
      * }
      */
     public static FunctionDescriptor nvgStrokeWidth$descriptor() {
@@ -1928,8 +1878,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgStrokeWidth(NVGcontext *ctx, float size)
+     * {@snippet lang = c : * void nvgStrokeWidth(NVGcontext *ctx, float size)
      * }
      */
     public static MethodHandle nvgStrokeWidth$handle() {
@@ -1938,8 +1887,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgStrokeWidth(NVGcontext *ctx, float size)
+     * {@snippet lang = c : * void nvgStrokeWidth(NVGcontext *ctx, float size)
      * }
      */
     public static MemorySegment nvgStrokeWidth$address() {
@@ -1947,8 +1895,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgStrokeWidth(NVGcontext *ctx, float size)
+     * {@snippet lang = c : * void nvgStrokeWidth(NVGcontext *ctx, float size)
      * }
      */
     public static void nvgStrokeWidth(MemorySegment ctx, float size) {
@@ -1959,17 +1906,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, size);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgLineCap {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgLineCap");
 
@@ -1978,8 +1924,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgLineCap(NVGcontext *ctx, int cap)
+     * {@snippet lang = c : * void nvgLineCap(NVGcontext *ctx, int cap)
      * }
      */
     public static FunctionDescriptor nvgLineCap$descriptor() {
@@ -1988,8 +1933,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgLineCap(NVGcontext *ctx, int cap)
+     * {@snippet lang = c : * void nvgLineCap(NVGcontext *ctx, int cap)
      * }
      */
     public static MethodHandle nvgLineCap$handle() {
@@ -1998,8 +1942,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgLineCap(NVGcontext *ctx, int cap)
+     * {@snippet lang = c : * void nvgLineCap(NVGcontext *ctx, int cap)
      * }
      */
     public static MemorySegment nvgLineCap$address() {
@@ -2007,8 +1950,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgLineCap(NVGcontext *ctx, int cap)
+     * {@snippet lang = c : * void nvgLineCap(NVGcontext *ctx, int cap)
      * }
      */
     public static void nvgLineCap(MemorySegment ctx, int cap) {
@@ -2019,17 +1961,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, cap);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgLineJoin {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgLineJoin");
 
@@ -2038,8 +1979,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgLineJoin(NVGcontext *ctx, int join)
+     * {@snippet lang = c : * void nvgLineJoin(NVGcontext *ctx, int join)
      * }
      */
     public static FunctionDescriptor nvgLineJoin$descriptor() {
@@ -2048,8 +1988,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgLineJoin(NVGcontext *ctx, int join)
+     * {@snippet lang = c : * void nvgLineJoin(NVGcontext *ctx, int join)
      * }
      */
     public static MethodHandle nvgLineJoin$handle() {
@@ -2058,8 +1997,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgLineJoin(NVGcontext *ctx, int join)
+     * {@snippet lang = c : * void nvgLineJoin(NVGcontext *ctx, int join)
      * }
      */
     public static MemorySegment nvgLineJoin$address() {
@@ -2067,8 +2005,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgLineJoin(NVGcontext *ctx, int join)
+     * {@snippet lang = c : * void nvgLineJoin(NVGcontext *ctx, int join)
      * }
      */
     public static void nvgLineJoin(MemorySegment ctx, int join) {
@@ -2079,17 +2016,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, join);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgGlobalAlpha {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgGlobalAlpha");
 
@@ -2098,8 +2034,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgGlobalAlpha(NVGcontext *ctx, float alpha)
+     * {@snippet lang = c : * void nvgGlobalAlpha(NVGcontext *ctx, float alpha)
      * }
      */
     public static FunctionDescriptor nvgGlobalAlpha$descriptor() {
@@ -2108,8 +2043,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgGlobalAlpha(NVGcontext *ctx, float alpha)
+     * {@snippet lang = c : * void nvgGlobalAlpha(NVGcontext *ctx, float alpha)
      * }
      */
     public static MethodHandle nvgGlobalAlpha$handle() {
@@ -2118,8 +2052,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgGlobalAlpha(NVGcontext *ctx, float alpha)
+     * {@snippet lang = c : * void nvgGlobalAlpha(NVGcontext *ctx, float alpha)
      * }
      */
     public static MemorySegment nvgGlobalAlpha$address() {
@@ -2127,8 +2060,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgGlobalAlpha(NVGcontext *ctx, float alpha)
+     * {@snippet lang = c : * void nvgGlobalAlpha(NVGcontext *ctx, float alpha)
      * }
      */
     public static void nvgGlobalAlpha(MemorySegment ctx, float alpha) {
@@ -2139,16 +2071,15 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, alpha);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgResetTransform {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgResetTransform");
 
@@ -2157,8 +2088,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgResetTransform(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgResetTransform(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgResetTransform$descriptor() {
@@ -2167,8 +2097,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgResetTransform(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgResetTransform(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgResetTransform$handle() {
@@ -2177,8 +2106,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgResetTransform(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgResetTransform(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgResetTransform$address() {
@@ -2186,8 +2114,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgResetTransform(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgResetTransform(NVGcontext *ctx)
      * }
      */
     public static void nvgResetTransform(MemorySegment ctx) {
@@ -2198,22 +2125,21 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransform {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransform");
 
@@ -2222,8 +2148,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTransform(NVGcontext *ctx, float a, float b, float c, float d, float e, float f)
+     * {@snippet lang = c
+     * : * void nvgTransform(NVGcontext *ctx, float a, float b, float c, float d, float e, float f)
      * }
      */
     public static FunctionDescriptor nvgTransform$descriptor() {
@@ -2232,8 +2158,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTransform(NVGcontext *ctx, float a, float b, float c, float d, float e, float f)
+     * {@snippet lang = c
+     * : * void nvgTransform(NVGcontext *ctx, float a, float b, float c, float d, float e, float f)
      * }
      */
     public static MethodHandle nvgTransform$handle() {
@@ -2242,8 +2168,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTransform(NVGcontext *ctx, float a, float b, float c, float d, float e, float f)
+     * {@snippet lang = c
+     * : * void nvgTransform(NVGcontext *ctx, float a, float b, float c, float d, float e, float f)
      * }
      */
     public static MemorySegment nvgTransform$address() {
@@ -2251,8 +2177,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTransform(NVGcontext *ctx, float a, float b, float c, float d, float e, float f)
+     * {@snippet lang = c
+     * : * void nvgTransform(NVGcontext *ctx, float a, float b, float c, float d, float e, float f)
      * }
      */
     public static void nvgTransform(MemorySegment ctx, float a, float b, float c, float d, float e, float f) {
@@ -2263,18 +2189,17 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, a, b, c, d, e, f);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTranslate {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTranslate");
 
@@ -2283,8 +2208,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTranslate(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgTranslate(NVGcontext *ctx, float x, float y)
      * }
      */
     public static FunctionDescriptor nvgTranslate$descriptor() {
@@ -2293,8 +2217,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTranslate(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgTranslate(NVGcontext *ctx, float x, float y)
      * }
      */
     public static MethodHandle nvgTranslate$handle() {
@@ -2303,8 +2226,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTranslate(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgTranslate(NVGcontext *ctx, float x, float y)
      * }
      */
     public static MemorySegment nvgTranslate$address() {
@@ -2312,8 +2234,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTranslate(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgTranslate(NVGcontext *ctx, float x, float y)
      * }
      */
     public static void nvgTranslate(MemorySegment ctx, float x, float y) {
@@ -2324,17 +2245,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, x, y);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgRotate {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgRotate");
 
@@ -2343,8 +2263,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgRotate(NVGcontext *ctx, float angle)
+     * {@snippet lang = c : * void nvgRotate(NVGcontext *ctx, float angle)
      * }
      */
     public static FunctionDescriptor nvgRotate$descriptor() {
@@ -2353,8 +2272,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgRotate(NVGcontext *ctx, float angle)
+     * {@snippet lang = c : * void nvgRotate(NVGcontext *ctx, float angle)
      * }
      */
     public static MethodHandle nvgRotate$handle() {
@@ -2363,8 +2281,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgRotate(NVGcontext *ctx, float angle)
+     * {@snippet lang = c : * void nvgRotate(NVGcontext *ctx, float angle)
      * }
      */
     public static MemorySegment nvgRotate$address() {
@@ -2372,8 +2289,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgRotate(NVGcontext *ctx, float angle)
+     * {@snippet lang = c : * void nvgRotate(NVGcontext *ctx, float angle)
      * }
      */
     public static void nvgRotate(MemorySegment ctx, float angle) {
@@ -2384,17 +2300,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, angle);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgSkewX {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgSkewX");
 
@@ -2403,8 +2318,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgSkewX(NVGcontext *ctx, float angle)
+     * {@snippet lang = c : * void nvgSkewX(NVGcontext *ctx, float angle)
      * }
      */
     public static FunctionDescriptor nvgSkewX$descriptor() {
@@ -2413,8 +2327,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgSkewX(NVGcontext *ctx, float angle)
+     * {@snippet lang = c : * void nvgSkewX(NVGcontext *ctx, float angle)
      * }
      */
     public static MethodHandle nvgSkewX$handle() {
@@ -2423,8 +2336,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgSkewX(NVGcontext *ctx, float angle)
+     * {@snippet lang = c : * void nvgSkewX(NVGcontext *ctx, float angle)
      * }
      */
     public static MemorySegment nvgSkewX$address() {
@@ -2432,8 +2344,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgSkewX(NVGcontext *ctx, float angle)
+     * {@snippet lang = c : * void nvgSkewX(NVGcontext *ctx, float angle)
      * }
      */
     public static void nvgSkewX(MemorySegment ctx, float angle) {
@@ -2444,17 +2355,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, angle);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgSkewY {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgSkewY");
 
@@ -2463,8 +2373,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgSkewY(NVGcontext *ctx, float angle)
+     * {@snippet lang = c : * void nvgSkewY(NVGcontext *ctx, float angle)
      * }
      */
     public static FunctionDescriptor nvgSkewY$descriptor() {
@@ -2473,8 +2382,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgSkewY(NVGcontext *ctx, float angle)
+     * {@snippet lang = c : * void nvgSkewY(NVGcontext *ctx, float angle)
      * }
      */
     public static MethodHandle nvgSkewY$handle() {
@@ -2483,8 +2391,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgSkewY(NVGcontext *ctx, float angle)
+     * {@snippet lang = c : * void nvgSkewY(NVGcontext *ctx, float angle)
      * }
      */
     public static MemorySegment nvgSkewY$address() {
@@ -2492,8 +2399,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgSkewY(NVGcontext *ctx, float angle)
+     * {@snippet lang = c : * void nvgSkewY(NVGcontext *ctx, float angle)
      * }
      */
     public static void nvgSkewY(MemorySegment ctx, float angle) {
@@ -2504,18 +2410,17 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, angle);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgScale {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgScale");
 
@@ -2524,8 +2429,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgScale(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgScale(NVGcontext *ctx, float x, float y)
      * }
      */
     public static FunctionDescriptor nvgScale$descriptor() {
@@ -2534,8 +2438,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgScale(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgScale(NVGcontext *ctx, float x, float y)
      * }
      */
     public static MethodHandle nvgScale$handle() {
@@ -2544,8 +2447,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgScale(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgScale(NVGcontext *ctx, float x, float y)
      * }
      */
     public static MemorySegment nvgScale$address() {
@@ -2553,8 +2455,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgScale(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgScale(NVGcontext *ctx, float x, float y)
      * }
      */
     public static void nvgScale(MemorySegment ctx, float x, float y) {
@@ -2565,17 +2466,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, x, y);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgCurrentTransform {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgCurrentTransform");
 
@@ -2584,8 +2484,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgCurrentTransform(NVGcontext *ctx, float *xform)
+     * {@snippet lang = c
+     * : * void nvgCurrentTransform(NVGcontext *ctx, float *xform)
      * }
      */
     public static FunctionDescriptor nvgCurrentTransform$descriptor() {
@@ -2594,8 +2494,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgCurrentTransform(NVGcontext *ctx, float *xform)
+     * {@snippet lang = c
+     * : * void nvgCurrentTransform(NVGcontext *ctx, float *xform)
      * }
      */
     public static MethodHandle nvgCurrentTransform$handle() {
@@ -2604,8 +2504,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgCurrentTransform(NVGcontext *ctx, float *xform)
+     * {@snippet lang = c
+     * : * void nvgCurrentTransform(NVGcontext *ctx, float *xform)
      * }
      */
     public static MemorySegment nvgCurrentTransform$address() {
@@ -2613,8 +2513,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgCurrentTransform(NVGcontext *ctx, float *xform)
+     * {@snippet lang = c
+     * : * void nvgCurrentTransform(NVGcontext *ctx, float *xform)
      * }
      */
     public static void nvgCurrentTransform(MemorySegment ctx, MemorySegment xform) {
@@ -2625,16 +2525,15 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, xform);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransformIdentity {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransformIdentity");
 
@@ -2643,8 +2542,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTransformIdentity(float *dst)
+     * {@snippet lang = c : * void nvgTransformIdentity(float *dst)
      * }
      */
     public static FunctionDescriptor nvgTransformIdentity$descriptor() {
@@ -2653,8 +2551,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTransformIdentity(float *dst)
+     * {@snippet lang = c : * void nvgTransformIdentity(float *dst)
      * }
      */
     public static MethodHandle nvgTransformIdentity$handle() {
@@ -2663,8 +2560,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTransformIdentity(float *dst)
+     * {@snippet lang = c : * void nvgTransformIdentity(float *dst)
      * }
      */
     public static MemorySegment nvgTransformIdentity$address() {
@@ -2672,8 +2568,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTransformIdentity(float *dst)
+     * {@snippet lang = c : * void nvgTransformIdentity(float *dst)
      * }
      */
     public static void nvgTransformIdentity(MemorySegment dst) {
@@ -2684,18 +2579,17 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(dst);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransformTranslate {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransformTranslate");
 
@@ -2704,8 +2598,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTransformTranslate(float *dst, float tx, float ty)
+     * {@snippet lang = c
+     * : * void nvgTransformTranslate(float *dst, float tx, float ty)
      * }
      */
     public static FunctionDescriptor nvgTransformTranslate$descriptor() {
@@ -2714,8 +2608,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTransformTranslate(float *dst, float tx, float ty)
+     * {@snippet lang = c
+     * : * void nvgTransformTranslate(float *dst, float tx, float ty)
      * }
      */
     public static MethodHandle nvgTransformTranslate$handle() {
@@ -2724,8 +2618,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTransformTranslate(float *dst, float tx, float ty)
+     * {@snippet lang = c
+     * : * void nvgTransformTranslate(float *dst, float tx, float ty)
      * }
      */
     public static MemorySegment nvgTransformTranslate$address() {
@@ -2733,8 +2627,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTransformTranslate(float *dst, float tx, float ty)
+     * {@snippet lang = c
+     * : * void nvgTransformTranslate(float *dst, float tx, float ty)
      * }
      */
     public static void nvgTransformTranslate(MemorySegment dst, float tx, float ty) {
@@ -2745,18 +2639,17 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(dst, tx, ty);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransformScale {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransformScale");
 
@@ -2765,8 +2658,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTransformScale(float *dst, float sx, float sy)
+     * {@snippet lang = c : * void nvgTransformScale(float *dst, float sx, float sy)
      * }
      */
     public static FunctionDescriptor nvgTransformScale$descriptor() {
@@ -2775,8 +2667,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTransformScale(float *dst, float sx, float sy)
+     * {@snippet lang = c : * void nvgTransformScale(float *dst, float sx, float sy)
      * }
      */
     public static MethodHandle nvgTransformScale$handle() {
@@ -2785,8 +2676,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTransformScale(float *dst, float sx, float sy)
+     * {@snippet lang = c : * void nvgTransformScale(float *dst, float sx, float sy)
      * }
      */
     public static MemorySegment nvgTransformScale$address() {
@@ -2794,8 +2684,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTransformScale(float *dst, float sx, float sy)
+     * {@snippet lang = c : * void nvgTransformScale(float *dst, float sx, float sy)
      * }
      */
     public static void nvgTransformScale(MemorySegment dst, float sx, float sy) {
@@ -2806,17 +2695,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(dst, sx, sy);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransformRotate {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransformRotate");
 
@@ -2825,8 +2713,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTransformRotate(float *dst, float a)
+     * {@snippet lang = c : * void nvgTransformRotate(float *dst, float a)
      * }
      */
     public static FunctionDescriptor nvgTransformRotate$descriptor() {
@@ -2835,8 +2722,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTransformRotate(float *dst, float a)
+     * {@snippet lang = c : * void nvgTransformRotate(float *dst, float a)
      * }
      */
     public static MethodHandle nvgTransformRotate$handle() {
@@ -2845,8 +2731,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTransformRotate(float *dst, float a)
+     * {@snippet lang = c : * void nvgTransformRotate(float *dst, float a)
      * }
      */
     public static MemorySegment nvgTransformRotate$address() {
@@ -2854,8 +2739,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTransformRotate(float *dst, float a)
+     * {@snippet lang = c : * void nvgTransformRotate(float *dst, float a)
      * }
      */
     public static void nvgTransformRotate(MemorySegment dst, float a) {
@@ -2866,17 +2750,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(dst, a);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransformSkewX {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransformSkewX");
 
@@ -2885,8 +2768,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTransformSkewX(float *dst, float a)
+     * {@snippet lang = c : * void nvgTransformSkewX(float *dst, float a)
      * }
      */
     public static FunctionDescriptor nvgTransformSkewX$descriptor() {
@@ -2895,8 +2777,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTransformSkewX(float *dst, float a)
+     * {@snippet lang = c : * void nvgTransformSkewX(float *dst, float a)
      * }
      */
     public static MethodHandle nvgTransformSkewX$handle() {
@@ -2905,8 +2786,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTransformSkewX(float *dst, float a)
+     * {@snippet lang = c : * void nvgTransformSkewX(float *dst, float a)
      * }
      */
     public static MemorySegment nvgTransformSkewX$address() {
@@ -2914,8 +2794,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTransformSkewX(float *dst, float a)
+     * {@snippet lang = c : * void nvgTransformSkewX(float *dst, float a)
      * }
      */
     public static void nvgTransformSkewX(MemorySegment dst, float a) {
@@ -2926,17 +2805,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(dst, a);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransformSkewY {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransformSkewY");
 
@@ -2945,8 +2823,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTransformSkewY(float *dst, float a)
+     * {@snippet lang = c : * void nvgTransformSkewY(float *dst, float a)
      * }
      */
     public static FunctionDescriptor nvgTransformSkewY$descriptor() {
@@ -2955,8 +2832,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTransformSkewY(float *dst, float a)
+     * {@snippet lang = c : * void nvgTransformSkewY(float *dst, float a)
      * }
      */
     public static MethodHandle nvgTransformSkewY$handle() {
@@ -2965,8 +2841,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTransformSkewY(float *dst, float a)
+     * {@snippet lang = c : * void nvgTransformSkewY(float *dst, float a)
      * }
      */
     public static MemorySegment nvgTransformSkewY$address() {
@@ -2974,8 +2849,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTransformSkewY(float *dst, float a)
+     * {@snippet lang = c : * void nvgTransformSkewY(float *dst, float a)
      * }
      */
     public static void nvgTransformSkewY(MemorySegment dst, float a) {
@@ -2986,17 +2860,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(dst, a);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransformMultiply {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransformMultiply");
 
@@ -3005,8 +2878,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTransformMultiply(float *dst, const float *src)
+     * {@snippet lang = c
+     * : * void nvgTransformMultiply(float *dst, const float *src)
      * }
      */
     public static FunctionDescriptor nvgTransformMultiply$descriptor() {
@@ -3015,8 +2888,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTransformMultiply(float *dst, const float *src)
+     * {@snippet lang = c
+     * : * void nvgTransformMultiply(float *dst, const float *src)
      * }
      */
     public static MethodHandle nvgTransformMultiply$handle() {
@@ -3025,8 +2898,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTransformMultiply(float *dst, const float *src)
+     * {@snippet lang = c
+     * : * void nvgTransformMultiply(float *dst, const float *src)
      * }
      */
     public static MemorySegment nvgTransformMultiply$address() {
@@ -3034,8 +2907,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTransformMultiply(float *dst, const float *src)
+     * {@snippet lang = c
+     * : * void nvgTransformMultiply(float *dst, const float *src)
      * }
      */
     public static void nvgTransformMultiply(MemorySegment dst, MemorySegment src) {
@@ -3046,17 +2919,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(dst, src);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransformPremultiply {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransformPremultiply");
 
@@ -3065,8 +2937,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTransformPremultiply(float *dst, const float *src)
+     * {@snippet lang = c
+     * : * void nvgTransformPremultiply(float *dst, const float *src)
      * }
      */
     public static FunctionDescriptor nvgTransformPremultiply$descriptor() {
@@ -3075,8 +2947,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTransformPremultiply(float *dst, const float *src)
+     * {@snippet lang = c
+     * : * void nvgTransformPremultiply(float *dst, const float *src)
      * }
      */
     public static MethodHandle nvgTransformPremultiply$handle() {
@@ -3085,8 +2957,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTransformPremultiply(float *dst, const float *src)
+     * {@snippet lang = c
+     * : * void nvgTransformPremultiply(float *dst, const float *src)
      * }
      */
     public static MemorySegment nvgTransformPremultiply$address() {
@@ -3094,8 +2966,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTransformPremultiply(float *dst, const float *src)
+     * {@snippet lang = c
+     * : * void nvgTransformPremultiply(float *dst, const float *src)
      * }
      */
     public static void nvgTransformPremultiply(MemorySegment dst, MemorySegment src) {
@@ -3106,18 +2978,17 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(dst, src);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransformInverse {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransformInverse");
 
@@ -3126,8 +2997,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgTransformInverse(float *dst, const float *src)
+     * {@snippet lang = c : * int nvgTransformInverse(float *dst, const float *src)
      * }
      */
     public static FunctionDescriptor nvgTransformInverse$descriptor() {
@@ -3136,8 +3006,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgTransformInverse(float *dst, const float *src)
+     * {@snippet lang = c : * int nvgTransformInverse(float *dst, const float *src)
      * }
      */
     public static MethodHandle nvgTransformInverse$handle() {
@@ -3146,8 +3015,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgTransformInverse(float *dst, const float *src)
+     * {@snippet lang = c : * int nvgTransformInverse(float *dst, const float *src)
      * }
      */
     public static MemorySegment nvgTransformInverse$address() {
@@ -3155,8 +3023,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgTransformInverse(float *dst, const float *src)
+     * {@snippet lang = c : * int nvgTransformInverse(float *dst, const float *src)
      * }
      */
     public static int nvgTransformInverse(MemorySegment dst, MemorySegment src) {
@@ -3165,22 +3032,21 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgTransformInverse", dst, src);
             }
-            return (int)mh$.invokeExact(dst, src);
+            return (int) mh$.invokeExact(dst, src);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTransformPoint {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTransformPoint");
 
@@ -3189,8 +3055,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTransformPoint(float *dstx, float *dsty, const float *xform, float srcx, float srcy)
+     * {@snippet lang = c
+     * : * void nvgTransformPoint(float *dstx, float *dsty, const float *xform, float srcx, float srcy)
      * }
      */
     public static FunctionDescriptor nvgTransformPoint$descriptor() {
@@ -3199,8 +3065,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTransformPoint(float *dstx, float *dsty, const float *xform, float srcx, float srcy)
+     * {@snippet lang = c
+     * : * void nvgTransformPoint(float *dstx, float *dsty, const float *xform, float srcx, float srcy)
      * }
      */
     public static MethodHandle nvgTransformPoint$handle() {
@@ -3209,8 +3075,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTransformPoint(float *dstx, float *dsty, const float *xform, float srcx, float srcy)
+     * {@snippet lang = c
+     * : * void nvgTransformPoint(float *dstx, float *dsty, const float *xform, float srcx, float srcy)
      * }
      */
     public static MemorySegment nvgTransformPoint$address() {
@@ -3218,11 +3084,12 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTransformPoint(float *dstx, float *dsty, const float *xform, float srcx, float srcy)
+     * {@snippet lang = c
+     * : * void nvgTransformPoint(float *dstx, float *dsty, const float *xform, float srcx, float srcy)
      * }
      */
-    public static void nvgTransformPoint(MemorySegment dstx, MemorySegment dsty, MemorySegment xform, float srcx, float srcy) {
+    public static void nvgTransformPoint(MemorySegment dstx, MemorySegment dsty, MemorySegment xform, float srcx,
+            float srcy) {
         var mh$ = nvgTransformPoint.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
@@ -3230,17 +3097,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(dstx, dsty, xform, srcx, srcy);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgDegToRad {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgDegToRad");
 
@@ -3249,8 +3115,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * float nvgDegToRad(float deg)
+     * {@snippet lang = c : * float nvgDegToRad(float deg)
      * }
      */
     public static FunctionDescriptor nvgDegToRad$descriptor() {
@@ -3259,8 +3124,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * float nvgDegToRad(float deg)
+     * {@snippet lang = c : * float nvgDegToRad(float deg)
      * }
      */
     public static MethodHandle nvgDegToRad$handle() {
@@ -3269,8 +3133,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * float nvgDegToRad(float deg)
+     * {@snippet lang = c : * float nvgDegToRad(float deg)
      * }
      */
     public static MemorySegment nvgDegToRad$address() {
@@ -3278,8 +3141,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * float nvgDegToRad(float deg)
+     * {@snippet lang = c : * float nvgDegToRad(float deg)
      * }
      */
     public static float nvgDegToRad(float deg) {
@@ -3288,19 +3150,18 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgDegToRad", deg);
             }
-            return (float)mh$.invokeExact(deg);
+            return (float) mh$.invokeExact(deg);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgRadToDeg {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgRadToDeg");
 
@@ -3309,8 +3170,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * float nvgRadToDeg(float rad)
+     * {@snippet lang = c : * float nvgRadToDeg(float rad)
      * }
      */
     public static FunctionDescriptor nvgRadToDeg$descriptor() {
@@ -3319,8 +3179,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * float nvgRadToDeg(float rad)
+     * {@snippet lang = c : * float nvgRadToDeg(float rad)
      * }
      */
     public static MethodHandle nvgRadToDeg$handle() {
@@ -3329,8 +3188,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * float nvgRadToDeg(float rad)
+     * {@snippet lang = c : * float nvgRadToDeg(float rad)
      * }
      */
     public static MemorySegment nvgRadToDeg$address() {
@@ -3338,8 +3196,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * float nvgRadToDeg(float rad)
+     * {@snippet lang = c : * float nvgRadToDeg(float rad)
      * }
      */
     public static float nvgRadToDeg(float rad) {
@@ -3348,21 +3205,20 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgRadToDeg", rad);
             }
-            return (float)mh$.invokeExact(rad);
+            return (float) mh$.invokeExact(rad);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgCreateImage {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgCreateImage");
 
@@ -3371,8 +3227,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgCreateImage(NVGcontext *ctx, const char *filename, int imageFlags)
+     * {@snippet lang = c
+     * : * int nvgCreateImage(NVGcontext *ctx, const char *filename, int imageFlags)
      * }
      */
     public static FunctionDescriptor nvgCreateImage$descriptor() {
@@ -3381,8 +3237,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgCreateImage(NVGcontext *ctx, const char *filename, int imageFlags)
+     * {@snippet lang = c
+     * : * int nvgCreateImage(NVGcontext *ctx, const char *filename, int imageFlags)
      * }
      */
     public static MethodHandle nvgCreateImage$handle() {
@@ -3391,8 +3247,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgCreateImage(NVGcontext *ctx, const char *filename, int imageFlags)
+     * {@snippet lang = c
+     * : * int nvgCreateImage(NVGcontext *ctx, const char *filename, int imageFlags)
      * }
      */
     public static MemorySegment nvgCreateImage$address() {
@@ -3400,8 +3256,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgCreateImage(NVGcontext *ctx, const char *filename, int imageFlags)
+     * {@snippet lang = c
+     * : * int nvgCreateImage(NVGcontext *ctx, const char *filename, int imageFlags)
      * }
      */
     public static int nvgCreateImage(MemorySegment ctx, MemorySegment filename, int imageFlags) {
@@ -3410,22 +3266,21 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgCreateImage", ctx, filename, imageFlags);
             }
-            return (int)mh$.invokeExact(ctx, filename, imageFlags);
+            return (int) mh$.invokeExact(ctx, filename, imageFlags);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgCreateImageMem {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgCreateImageMem");
 
@@ -3434,8 +3289,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgCreateImageMem(NVGcontext *ctx, int imageFlags, unsigned char *data, int ndata)
+     * {@snippet lang = c
+     * : * int nvgCreateImageMem(NVGcontext *ctx, int imageFlags, unsigned char *data, int ndata)
      * }
      */
     public static FunctionDescriptor nvgCreateImageMem$descriptor() {
@@ -3444,8 +3299,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgCreateImageMem(NVGcontext *ctx, int imageFlags, unsigned char *data, int ndata)
+     * {@snippet lang = c
+     * : * int nvgCreateImageMem(NVGcontext *ctx, int imageFlags, unsigned char *data, int ndata)
      * }
      */
     public static MethodHandle nvgCreateImageMem$handle() {
@@ -3454,8 +3309,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgCreateImageMem(NVGcontext *ctx, int imageFlags, unsigned char *data, int ndata)
+     * {@snippet lang = c
+     * : * int nvgCreateImageMem(NVGcontext *ctx, int imageFlags, unsigned char *data, int ndata)
      * }
      */
     public static MemorySegment nvgCreateImageMem$address() {
@@ -3463,8 +3318,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgCreateImageMem(NVGcontext *ctx, int imageFlags, unsigned char *data, int ndata)
+     * {@snippet lang = c
+     * : * int nvgCreateImageMem(NVGcontext *ctx, int imageFlags, unsigned char *data, int ndata)
      * }
      */
     public static int nvgCreateImageMem(MemorySegment ctx, int imageFlags, MemorySegment data, int ndata) {
@@ -3473,23 +3328,22 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgCreateImageMem", ctx, imageFlags, data, ndata);
             }
-            return (int)mh$.invokeExact(ctx, imageFlags, data, ndata);
+            return (int) mh$.invokeExact(ctx, imageFlags, data, ndata);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgCreateImageRGBA {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_INT,
-            NVG.C_INT,
-            NVG.C_INT,
-            NVG.C_POINTER
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_INT,
+                NVG.C_INT,
+                NVG.C_INT,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgCreateImageRGBA");
 
@@ -3498,8 +3352,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgCreateImageRGBA(NVGcontext *ctx, int w, int h, int imageFlags, const unsigned char *data)
+     * {@snippet lang = c
+     * : * int nvgCreateImageRGBA(NVGcontext *ctx, int w, int h, int imageFlags, const unsigned char *data)
      * }
      */
     public static FunctionDescriptor nvgCreateImageRGBA$descriptor() {
@@ -3508,8 +3362,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgCreateImageRGBA(NVGcontext *ctx, int w, int h, int imageFlags, const unsigned char *data)
+     * {@snippet lang = c
+     * : * int nvgCreateImageRGBA(NVGcontext *ctx, int w, int h, int imageFlags, const unsigned char *data)
      * }
      */
     public static MethodHandle nvgCreateImageRGBA$handle() {
@@ -3518,8 +3372,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgCreateImageRGBA(NVGcontext *ctx, int w, int h, int imageFlags, const unsigned char *data)
+     * {@snippet lang = c
+     * : * int nvgCreateImageRGBA(NVGcontext *ctx, int w, int h, int imageFlags, const unsigned char *data)
      * }
      */
     public static MemorySegment nvgCreateImageRGBA$address() {
@@ -3527,8 +3381,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgCreateImageRGBA(NVGcontext *ctx, int w, int h, int imageFlags, const unsigned char *data)
+     * {@snippet lang = c
+     * : * int nvgCreateImageRGBA(NVGcontext *ctx, int w, int h, int imageFlags, const unsigned char *data)
      * }
      */
     public static int nvgCreateImageRGBA(MemorySegment ctx, int w, int h, int imageFlags, MemorySegment data) {
@@ -3537,20 +3391,19 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgCreateImageRGBA", ctx, w, h, imageFlags, data);
             }
-            return (int)mh$.invokeExact(ctx, w, h, imageFlags, data);
+            return (int) mh$.invokeExact(ctx, w, h, imageFlags, data);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgUpdateImage {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT,
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER,
+                NVG.C_INT,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgUpdateImage");
 
@@ -3559,8 +3412,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgUpdateImage(NVGcontext *ctx, int image, const unsigned char *data)
+     * {@snippet lang = c
+     * : * void nvgUpdateImage(NVGcontext *ctx, int image, const unsigned char *data)
      * }
      */
     public static FunctionDescriptor nvgUpdateImage$descriptor() {
@@ -3569,8 +3422,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgUpdateImage(NVGcontext *ctx, int image, const unsigned char *data)
+     * {@snippet lang = c
+     * : * void nvgUpdateImage(NVGcontext *ctx, int image, const unsigned char *data)
      * }
      */
     public static MethodHandle nvgUpdateImage$handle() {
@@ -3579,8 +3432,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgUpdateImage(NVGcontext *ctx, int image, const unsigned char *data)
+     * {@snippet lang = c
+     * : * void nvgUpdateImage(NVGcontext *ctx, int image, const unsigned char *data)
      * }
      */
     public static MemorySegment nvgUpdateImage$address() {
@@ -3588,8 +3441,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgUpdateImage(NVGcontext *ctx, int image, const unsigned char *data)
+     * {@snippet lang = c
+     * : * void nvgUpdateImage(NVGcontext *ctx, int image, const unsigned char *data)
      * }
      */
     public static void nvgUpdateImage(MemorySegment ctx, int image, MemorySegment data) {
@@ -3600,19 +3453,18 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, image, data);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgImageSize {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER,
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgImageSize");
 
@@ -3621,8 +3473,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgImageSize(NVGcontext *ctx, int image, int *w, int *h)
+     * {@snippet lang = c
+     * : * void nvgImageSize(NVGcontext *ctx, int image, int *w, int *h)
      * }
      */
     public static FunctionDescriptor nvgImageSize$descriptor() {
@@ -3631,8 +3483,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgImageSize(NVGcontext *ctx, int image, int *w, int *h)
+     * {@snippet lang = c
+     * : * void nvgImageSize(NVGcontext *ctx, int image, int *w, int *h)
      * }
      */
     public static MethodHandle nvgImageSize$handle() {
@@ -3641,8 +3493,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgImageSize(NVGcontext *ctx, int image, int *w, int *h)
+     * {@snippet lang = c
+     * : * void nvgImageSize(NVGcontext *ctx, int image, int *w, int *h)
      * }
      */
     public static MemorySegment nvgImageSize$address() {
@@ -3650,8 +3502,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgImageSize(NVGcontext *ctx, int image, int *w, int *h)
+     * {@snippet lang = c
+     * : * void nvgImageSize(NVGcontext *ctx, int image, int *w, int *h)
      * }
      */
     public static void nvgImageSize(MemorySegment ctx, int image, MemorySegment w, MemorySegment h) {
@@ -3662,17 +3514,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, image, w, h);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgDeleteImage {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgDeleteImage");
 
@@ -3681,8 +3532,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgDeleteImage(NVGcontext *ctx, int image)
+     * {@snippet lang = c : * void nvgDeleteImage(NVGcontext *ctx, int image)
      * }
      */
     public static FunctionDescriptor nvgDeleteImage$descriptor() {
@@ -3691,8 +3541,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgDeleteImage(NVGcontext *ctx, int image)
+     * {@snippet lang = c : * void nvgDeleteImage(NVGcontext *ctx, int image)
      * }
      */
     public static MethodHandle nvgDeleteImage$handle() {
@@ -3701,8 +3550,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgDeleteImage(NVGcontext *ctx, int image)
+     * {@snippet lang = c : * void nvgDeleteImage(NVGcontext *ctx, int image)
      * }
      */
     public static MemorySegment nvgDeleteImage$address() {
@@ -3710,8 +3558,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgDeleteImage(NVGcontext *ctx, int image)
+     * {@snippet lang = c : * void nvgDeleteImage(NVGcontext *ctx, int image)
      * }
      */
     public static void nvgDeleteImage(MemorySegment ctx, int image) {
@@ -3722,23 +3569,22 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, image);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgLinearGradient {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGpaint.layout(),
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVGcolor.layout(),
-            NVGcolor.layout()
-        );
+                NVGpaint.layout(),
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVGcolor.layout(),
+                NVGcolor.layout());
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgLinearGradient");
 
@@ -3747,8 +3593,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGpaint nvgLinearGradient(NVGcontext *ctx, float sx, float sy, float ex, float ey, NVGcolor icol, NVGcolor ocol)
+     * {@snippet lang = c
+     * : * NVGpaint nvgLinearGradient(NVGcontext *ctx, float sx, float sy, float ex, float ey, NVGcolor icol, NVGcolor ocol)
      * }
      */
     public static FunctionDescriptor nvgLinearGradient$descriptor() {
@@ -3757,8 +3603,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGpaint nvgLinearGradient(NVGcontext *ctx, float sx, float sy, float ex, float ey, NVGcolor icol, NVGcolor ocol)
+     * {@snippet lang = c
+     * : * NVGpaint nvgLinearGradient(NVGcontext *ctx, float sx, float sy, float ex, float ey, NVGcolor icol, NVGcolor ocol)
      * }
      */
     public static MethodHandle nvgLinearGradient$handle() {
@@ -3767,8 +3613,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGpaint nvgLinearGradient(NVGcontext *ctx, float sx, float sy, float ex, float ey, NVGcolor icol, NVGcolor ocol)
+     * {@snippet lang = c
+     * : * NVGpaint nvgLinearGradient(NVGcontext *ctx, float sx, float sy, float ex, float ey, NVGcolor icol, NVGcolor ocol)
      * }
      */
     public static MemorySegment nvgLinearGradient$address() {
@@ -3776,37 +3622,37 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGpaint nvgLinearGradient(NVGcontext *ctx, float sx, float sy, float ex, float ey, NVGcolor icol, NVGcolor ocol)
+     * {@snippet lang = c
+     * : * NVGpaint nvgLinearGradient(NVGcontext *ctx, float sx, float sy, float ex, float ey, NVGcolor icol, NVGcolor ocol)
      * }
      */
-    public static MemorySegment nvgLinearGradient(SegmentAllocator allocator, MemorySegment ctx, float sx, float sy, float ex, float ey, MemorySegment icol, MemorySegment ocol) {
+    public static MemorySegment nvgLinearGradient(SegmentAllocator allocator, MemorySegment ctx, float sx, float sy,
+            float ex, float ey, MemorySegment icol, MemorySegment ocol) {
         var mh$ = nvgLinearGradient.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgLinearGradient", allocator, ctx, sx, sy, ex, ey, icol, ocol);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, ctx, sx, sy, ex, ey, icol, ocol);
+            return (MemorySegment) mh$.invokeExact(allocator, ctx, sx, sy, ex, ey, icol, ocol);
         } catch (Error | RuntimeException e) {
-           throw e;
+            throw e;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgBoxGradient {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGpaint.layout(),
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVGcolor.layout(),
-            NVGcolor.layout()
-        );
+                NVGpaint.layout(),
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVGcolor.layout(),
+                NVGcolor.layout());
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgBoxGradient");
 
@@ -3815,8 +3661,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGpaint nvgBoxGradient(NVGcontext *ctx, float x, float y, float w, float h, float r, float f, NVGcolor icol, NVGcolor ocol)
+     * {@snippet lang = c
+     * : * NVGpaint nvgBoxGradient(NVGcontext *ctx, float x, float y, float w, float h, float r, float f, NVGcolor icol, NVGcolor ocol)
      * }
      */
     public static FunctionDescriptor nvgBoxGradient$descriptor() {
@@ -3825,8 +3671,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGpaint nvgBoxGradient(NVGcontext *ctx, float x, float y, float w, float h, float r, float f, NVGcolor icol, NVGcolor ocol)
+     * {@snippet lang = c
+     * : * NVGpaint nvgBoxGradient(NVGcontext *ctx, float x, float y, float w, float h, float r, float f, NVGcolor icol, NVGcolor ocol)
      * }
      */
     public static MethodHandle nvgBoxGradient$handle() {
@@ -3835,8 +3681,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGpaint nvgBoxGradient(NVGcontext *ctx, float x, float y, float w, float h, float r, float f, NVGcolor icol, NVGcolor ocol)
+     * {@snippet lang = c
+     * : * NVGpaint nvgBoxGradient(NVGcontext *ctx, float x, float y, float w, float h, float r, float f, NVGcolor icol, NVGcolor ocol)
      * }
      */
     public static MemorySegment nvgBoxGradient$address() {
@@ -3844,35 +3690,35 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGpaint nvgBoxGradient(NVGcontext *ctx, float x, float y, float w, float h, float r, float f, NVGcolor icol, NVGcolor ocol)
+     * {@snippet lang = c
+     * : * NVGpaint nvgBoxGradient(NVGcontext *ctx, float x, float y, float w, float h, float r, float f, NVGcolor icol, NVGcolor ocol)
      * }
      */
-    public static MemorySegment nvgBoxGradient(SegmentAllocator allocator, MemorySegment ctx, float x, float y, float w, float h, float r, float f, MemorySegment icol, MemorySegment ocol) {
+    public static MemorySegment nvgBoxGradient(SegmentAllocator allocator, MemorySegment ctx, float x, float y, float w,
+            float h, float r, float f, MemorySegment icol, MemorySegment ocol) {
         var mh$ = nvgBoxGradient.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgBoxGradient", allocator, ctx, x, y, w, h, r, f, icol, ocol);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, ctx, x, y, w, h, r, f, icol, ocol);
+            return (MemorySegment) mh$.invokeExact(allocator, ctx, x, y, w, h, r, f, icol, ocol);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgRadialGradient {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGpaint.layout(),
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVGcolor.layout(),
-            NVGcolor.layout()
-        );
+                NVGpaint.layout(),
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVGcolor.layout(),
+                NVGcolor.layout());
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgRadialGradient");
 
@@ -3881,8 +3727,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGpaint nvgRadialGradient(NVGcontext *ctx, float cx, float cy, float inr, float outr, NVGcolor icol, NVGcolor ocol)
+     * {@snippet lang = c
+     * : * NVGpaint nvgRadialGradient(NVGcontext *ctx, float cx, float cy, float inr, float outr, NVGcolor icol, NVGcolor ocol)
      * }
      */
     public static FunctionDescriptor nvgRadialGradient$descriptor() {
@@ -3891,8 +3737,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGpaint nvgRadialGradient(NVGcontext *ctx, float cx, float cy, float inr, float outr, NVGcolor icol, NVGcolor ocol)
+     * {@snippet lang = c
+     * : * NVGpaint nvgRadialGradient(NVGcontext *ctx, float cx, float cy, float inr, float outr, NVGcolor icol, NVGcolor ocol)
      * }
      */
     public static MethodHandle nvgRadialGradient$handle() {
@@ -3901,8 +3747,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGpaint nvgRadialGradient(NVGcontext *ctx, float cx, float cy, float inr, float outr, NVGcolor icol, NVGcolor ocol)
+     * {@snippet lang = c
+     * : * NVGpaint nvgRadialGradient(NVGcontext *ctx, float cx, float cy, float inr, float outr, NVGcolor icol, NVGcolor ocol)
      * }
      */
     public static MemorySegment nvgRadialGradient$address() {
@@ -3910,36 +3756,36 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGpaint nvgRadialGradient(NVGcontext *ctx, float cx, float cy, float inr, float outr, NVGcolor icol, NVGcolor ocol)
+     * {@snippet lang = c
+     * : * NVGpaint nvgRadialGradient(NVGcontext *ctx, float cx, float cy, float inr, float outr, NVGcolor icol, NVGcolor ocol)
      * }
      */
-    public static MemorySegment nvgRadialGradient(SegmentAllocator allocator, MemorySegment ctx, float cx, float cy, float inr, float outr, MemorySegment icol, MemorySegment ocol) {
+    public static MemorySegment nvgRadialGradient(SegmentAllocator allocator, MemorySegment ctx, float cx, float cy,
+            float inr, float outr, MemorySegment icol, MemorySegment ocol) {
         var mh$ = nvgRadialGradient.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgRadialGradient", allocator, ctx, cx, cy, inr, outr, icol, ocol);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, ctx, cx, cy, inr, outr, icol, ocol);
+            return (MemorySegment) mh$.invokeExact(allocator, ctx, cx, cy, inr, outr, icol, ocol);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgImagePattern {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVGpaint.layout(),
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_INT,
-            NVG.C_FLOAT
-        );
+                NVGpaint.layout(),
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_INT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgImagePattern");
 
@@ -3948,8 +3794,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGpaint nvgImagePattern(NVGcontext *ctx, float ox, float oy, float ex, float ey, float angle, int image, float alpha)
+     * {@snippet lang = c
+     * : * NVGpaint nvgImagePattern(NVGcontext *ctx, float ox, float oy, float ex, float ey, float angle, int image, float alpha)
      * }
      */
     public static FunctionDescriptor nvgImagePattern$descriptor() {
@@ -3958,8 +3804,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGpaint nvgImagePattern(NVGcontext *ctx, float ox, float oy, float ex, float ey, float angle, int image, float alpha)
+     * {@snippet lang = c
+     * : * NVGpaint nvgImagePattern(NVGcontext *ctx, float ox, float oy, float ex, float ey, float angle, int image, float alpha)
      * }
      */
     public static MethodHandle nvgImagePattern$handle() {
@@ -3968,8 +3814,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGpaint nvgImagePattern(NVGcontext *ctx, float ox, float oy, float ex, float ey, float angle, int image, float alpha)
+     * {@snippet lang = c
+     * : * NVGpaint nvgImagePattern(NVGcontext *ctx, float ox, float oy, float ex, float ey, float angle, int image, float alpha)
      * }
      */
     public static MemorySegment nvgImagePattern$address() {
@@ -3977,32 +3823,32 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGpaint nvgImagePattern(NVGcontext *ctx, float ox, float oy, float ex, float ey, float angle, int image, float alpha)
+     * {@snippet lang = c
+     * : * NVGpaint nvgImagePattern(NVGcontext *ctx, float ox, float oy, float ex, float ey, float angle, int image, float alpha)
      * }
      */
-    public static MemorySegment nvgImagePattern(SegmentAllocator allocator, MemorySegment ctx, float ox, float oy, float ex, float ey, float angle, int image, float alpha) {
+    public static MemorySegment nvgImagePattern(SegmentAllocator allocator, MemorySegment ctx, float ox, float oy,
+            float ex, float ey, float angle, int image, float alpha) {
         var mh$ = nvgImagePattern.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgImagePattern", allocator, ctx, ox, oy, ex, ey, angle, image, alpha);
             }
-            return (MemorySegment)mh$.invokeExact(allocator, ctx, ox, oy, ex, ey, angle, image, alpha);
+            return (MemorySegment) mh$.invokeExact(allocator, ctx, ox, oy, ex, ey, angle, image, alpha);
         } catch (Error | RuntimeException e) {
-           throw e;
+            throw e;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgScissor {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgScissor");
 
@@ -4011,8 +3857,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgScissor(NVGcontext *ctx, float x, float y, float w, float h)
+     * {@snippet lang = c
+     * : * void nvgScissor(NVGcontext *ctx, float x, float y, float w, float h)
      * }
      */
     public static FunctionDescriptor nvgScissor$descriptor() {
@@ -4021,8 +3867,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgScissor(NVGcontext *ctx, float x, float y, float w, float h)
+     * {@snippet lang = c
+     * : * void nvgScissor(NVGcontext *ctx, float x, float y, float w, float h)
      * }
      */
     public static MethodHandle nvgScissor$handle() {
@@ -4031,8 +3877,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgScissor(NVGcontext *ctx, float x, float y, float w, float h)
+     * {@snippet lang = c
+     * : * void nvgScissor(NVGcontext *ctx, float x, float y, float w, float h)
      * }
      */
     public static MemorySegment nvgScissor$address() {
@@ -4040,8 +3886,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgScissor(NVGcontext *ctx, float x, float y, float w, float h)
+     * {@snippet lang = c
+     * : * void nvgScissor(NVGcontext *ctx, float x, float y, float w, float h)
      * }
      */
     public static void nvgScissor(MemorySegment ctx, float x, float y, float w, float h) {
@@ -4052,20 +3898,19 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, x, y, w, h);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgIntersectScissor {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgIntersectScissor");
 
@@ -4074,8 +3919,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgIntersectScissor(NVGcontext *ctx, float x, float y, float w, float h)
+     * {@snippet lang = c
+     * : * void nvgIntersectScissor(NVGcontext *ctx, float x, float y, float w, float h)
      * }
      */
     public static FunctionDescriptor nvgIntersectScissor$descriptor() {
@@ -4084,8 +3929,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgIntersectScissor(NVGcontext *ctx, float x, float y, float w, float h)
+     * {@snippet lang = c
+     * : * void nvgIntersectScissor(NVGcontext *ctx, float x, float y, float w, float h)
      * }
      */
     public static MethodHandle nvgIntersectScissor$handle() {
@@ -4094,8 +3939,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgIntersectScissor(NVGcontext *ctx, float x, float y, float w, float h)
+     * {@snippet lang = c
+     * : * void nvgIntersectScissor(NVGcontext *ctx, float x, float y, float w, float h)
      * }
      */
     public static MemorySegment nvgIntersectScissor$address() {
@@ -4103,8 +3948,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgIntersectScissor(NVGcontext *ctx, float x, float y, float w, float h)
+     * {@snippet lang = c
+     * : * void nvgIntersectScissor(NVGcontext *ctx, float x, float y, float w, float h)
      * }
      */
     public static void nvgIntersectScissor(MemorySegment ctx, float x, float y, float w, float h) {
@@ -4115,16 +3960,15 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, x, y, w, h);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgResetScissor {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgResetScissor");
 
@@ -4133,8 +3977,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgResetScissor(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgResetScissor(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgResetScissor$descriptor() {
@@ -4143,8 +3986,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgResetScissor(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgResetScissor(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgResetScissor$handle() {
@@ -4153,8 +3995,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgResetScissor(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgResetScissor(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgResetScissor$address() {
@@ -4162,8 +4003,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgResetScissor(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgResetScissor(NVGcontext *ctx)
      * }
      */
     public static void nvgResetScissor(MemorySegment ctx) {
@@ -4174,16 +4014,15 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgBeginPath {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgBeginPath");
 
@@ -4192,8 +4031,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgBeginPath(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgBeginPath(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgBeginPath$descriptor() {
@@ -4202,8 +4040,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgBeginPath(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgBeginPath(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgBeginPath$handle() {
@@ -4212,8 +4049,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgBeginPath(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgBeginPath(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgBeginPath$address() {
@@ -4221,8 +4057,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgBeginPath(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgBeginPath(NVGcontext *ctx)
      * }
      */
     public static void nvgBeginPath(MemorySegment ctx) {
@@ -4233,18 +4068,17 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgMoveTo {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgMoveTo");
 
@@ -4253,8 +4087,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgMoveTo(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgMoveTo(NVGcontext *ctx, float x, float y)
      * }
      */
     public static FunctionDescriptor nvgMoveTo$descriptor() {
@@ -4263,8 +4096,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgMoveTo(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgMoveTo(NVGcontext *ctx, float x, float y)
      * }
      */
     public static MethodHandle nvgMoveTo$handle() {
@@ -4273,8 +4105,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgMoveTo(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgMoveTo(NVGcontext *ctx, float x, float y)
      * }
      */
     public static MemorySegment nvgMoveTo$address() {
@@ -4282,8 +4113,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgMoveTo(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgMoveTo(NVGcontext *ctx, float x, float y)
      * }
      */
     public static void nvgMoveTo(MemorySegment ctx, float x, float y) {
@@ -4294,18 +4124,17 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, x, y);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgLineTo {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgLineTo");
 
@@ -4314,8 +4143,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgLineTo(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgLineTo(NVGcontext *ctx, float x, float y)
      * }
      */
     public static FunctionDescriptor nvgLineTo$descriptor() {
@@ -4324,8 +4152,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgLineTo(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgLineTo(NVGcontext *ctx, float x, float y)
      * }
      */
     public static MethodHandle nvgLineTo$handle() {
@@ -4334,8 +4161,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgLineTo(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgLineTo(NVGcontext *ctx, float x, float y)
      * }
      */
     public static MemorySegment nvgLineTo$address() {
@@ -4343,8 +4169,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgLineTo(NVGcontext *ctx, float x, float y)
+     * {@snippet lang = c : * void nvgLineTo(NVGcontext *ctx, float x, float y)
      * }
      */
     public static void nvgLineTo(MemorySegment ctx, float x, float y) {
@@ -4355,22 +4180,21 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, x, y);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgBezierTo {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgBezierTo");
 
@@ -4379,8 +4203,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgBezierTo(NVGcontext *ctx, float c1x, float c1y, float c2x, float c2y, float x, float y)
+     * {@snippet lang = c
+     * : * void nvgBezierTo(NVGcontext *ctx, float c1x, float c1y, float c2x, float c2y, float x, float y)
      * }
      */
     public static FunctionDescriptor nvgBezierTo$descriptor() {
@@ -4389,8 +4213,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgBezierTo(NVGcontext *ctx, float c1x, float c1y, float c2x, float c2y, float x, float y)
+     * {@snippet lang = c
+     * : * void nvgBezierTo(NVGcontext *ctx, float c1x, float c1y, float c2x, float c2y, float x, float y)
      * }
      */
     public static MethodHandle nvgBezierTo$handle() {
@@ -4399,8 +4223,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgBezierTo(NVGcontext *ctx, float c1x, float c1y, float c2x, float c2y, float x, float y)
+     * {@snippet lang = c
+     * : * void nvgBezierTo(NVGcontext *ctx, float c1x, float c1y, float c2x, float c2y, float x, float y)
      * }
      */
     public static MemorySegment nvgBezierTo$address() {
@@ -4408,8 +4232,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgBezierTo(NVGcontext *ctx, float c1x, float c1y, float c2x, float c2y, float x, float y)
+     * {@snippet lang = c
+     * : * void nvgBezierTo(NVGcontext *ctx, float c1x, float c1y, float c2x, float c2y, float x, float y)
      * }
      */
     public static void nvgBezierTo(MemorySegment ctx, float c1x, float c1y, float c2x, float c2y, float x, float y) {
@@ -4420,20 +4244,19 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, c1x, c1y, c2x, c2y, x, y);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgQuadTo {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgQuadTo");
 
@@ -4442,8 +4265,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgQuadTo(NVGcontext *ctx, float cx, float cy, float x, float y)
+     * {@snippet lang = c
+     * : * void nvgQuadTo(NVGcontext *ctx, float cx, float cy, float x, float y)
      * }
      */
     public static FunctionDescriptor nvgQuadTo$descriptor() {
@@ -4452,8 +4275,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgQuadTo(NVGcontext *ctx, float cx, float cy, float x, float y)
+     * {@snippet lang = c
+     * : * void nvgQuadTo(NVGcontext *ctx, float cx, float cy, float x, float y)
      * }
      */
     public static MethodHandle nvgQuadTo$handle() {
@@ -4462,8 +4285,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgQuadTo(NVGcontext *ctx, float cx, float cy, float x, float y)
+     * {@snippet lang = c
+     * : * void nvgQuadTo(NVGcontext *ctx, float cx, float cy, float x, float y)
      * }
      */
     public static MemorySegment nvgQuadTo$address() {
@@ -4471,8 +4294,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgQuadTo(NVGcontext *ctx, float cx, float cy, float x, float y)
+     * {@snippet lang = c
+     * : * void nvgQuadTo(NVGcontext *ctx, float cx, float cy, float x, float y)
      * }
      */
     public static void nvgQuadTo(MemorySegment ctx, float cx, float cy, float x, float y) {
@@ -4483,21 +4306,20 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, cx, cy, x, y);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgArcTo {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgArcTo");
 
@@ -4506,8 +4328,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgArcTo(NVGcontext *ctx, float x1, float y1, float x2, float y2, float radius)
+     * {@snippet lang = c
+     * : * void nvgArcTo(NVGcontext *ctx, float x1, float y1, float x2, float y2, float radius)
      * }
      */
     public static FunctionDescriptor nvgArcTo$descriptor() {
@@ -4516,8 +4338,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgArcTo(NVGcontext *ctx, float x1, float y1, float x2, float y2, float radius)
+     * {@snippet lang = c
+     * : * void nvgArcTo(NVGcontext *ctx, float x1, float y1, float x2, float y2, float radius)
      * }
      */
     public static MethodHandle nvgArcTo$handle() {
@@ -4526,8 +4348,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgArcTo(NVGcontext *ctx, float x1, float y1, float x2, float y2, float radius)
+     * {@snippet lang = c
+     * : * void nvgArcTo(NVGcontext *ctx, float x1, float y1, float x2, float y2, float radius)
      * }
      */
     public static MemorySegment nvgArcTo$address() {
@@ -4535,8 +4357,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgArcTo(NVGcontext *ctx, float x1, float y1, float x2, float y2, float radius)
+     * {@snippet lang = c
+     * : * void nvgArcTo(NVGcontext *ctx, float x1, float y1, float x2, float y2, float radius)
      * }
      */
     public static void nvgArcTo(MemorySegment ctx, float x1, float y1, float x2, float y2, float radius) {
@@ -4547,16 +4369,15 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, x1, y1, x2, y2, radius);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgClosePath {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgClosePath");
 
@@ -4565,8 +4386,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgClosePath(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgClosePath(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgClosePath$descriptor() {
@@ -4575,8 +4395,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgClosePath(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgClosePath(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgClosePath$handle() {
@@ -4585,8 +4404,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgClosePath(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgClosePath(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgClosePath$address() {
@@ -4594,8 +4412,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgClosePath(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgClosePath(NVGcontext *ctx)
      * }
      */
     public static void nvgClosePath(MemorySegment ctx) {
@@ -4606,17 +4423,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgPathWinding {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgPathWinding");
 
@@ -4625,8 +4441,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgPathWinding(NVGcontext *ctx, int dir)
+     * {@snippet lang = c : * void nvgPathWinding(NVGcontext *ctx, int dir)
      * }
      */
     public static FunctionDescriptor nvgPathWinding$descriptor() {
@@ -4635,8 +4450,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgPathWinding(NVGcontext *ctx, int dir)
+     * {@snippet lang = c : * void nvgPathWinding(NVGcontext *ctx, int dir)
      * }
      */
     public static MethodHandle nvgPathWinding$handle() {
@@ -4645,8 +4459,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgPathWinding(NVGcontext *ctx, int dir)
+     * {@snippet lang = c : * void nvgPathWinding(NVGcontext *ctx, int dir)
      * }
      */
     public static MemorySegment nvgPathWinding$address() {
@@ -4654,8 +4467,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgPathWinding(NVGcontext *ctx, int dir)
+     * {@snippet lang = c : * void nvgPathWinding(NVGcontext *ctx, int dir)
      * }
      */
     public static void nvgPathWinding(MemorySegment ctx, int dir) {
@@ -4666,22 +4478,21 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, dir);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgArc {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgArc");
 
@@ -4690,8 +4501,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgArc(NVGcontext *ctx, float cx, float cy, float r, float a0, float a1, int dir)
+     * {@snippet lang = c
+     * : * void nvgArc(NVGcontext *ctx, float cx, float cy, float r, float a0, float a1, int dir)
      * }
      */
     public static FunctionDescriptor nvgArc$descriptor() {
@@ -4700,8 +4511,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgArc(NVGcontext *ctx, float cx, float cy, float r, float a0, float a1, int dir)
+     * {@snippet lang = c
+     * : * void nvgArc(NVGcontext *ctx, float cx, float cy, float r, float a0, float a1, int dir)
      * }
      */
     public static MethodHandle nvgArc$handle() {
@@ -4710,8 +4521,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgArc(NVGcontext *ctx, float cx, float cy, float r, float a0, float a1, int dir)
+     * {@snippet lang = c
+     * : * void nvgArc(NVGcontext *ctx, float cx, float cy, float r, float a0, float a1, int dir)
      * }
      */
     public static MemorySegment nvgArc$address() {
@@ -4719,8 +4530,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgArc(NVGcontext *ctx, float cx, float cy, float r, float a0, float a1, int dir)
+     * {@snippet lang = c
+     * : * void nvgArc(NVGcontext *ctx, float cx, float cy, float r, float a0, float a1, int dir)
      * }
      */
     public static void nvgArc(MemorySegment ctx, float cx, float cy, float r, float a0, float a1, int dir) {
@@ -4731,20 +4542,19 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, cx, cy, r, a0, a1, dir);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgRect {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgRect");
 
@@ -4753,8 +4563,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgRect(NVGcontext *ctx, float x, float y, float w, float h)
+     * {@snippet lang = c
+     * : * void nvgRect(NVGcontext *ctx, float x, float y, float w, float h)
      * }
      */
     public static FunctionDescriptor nvgRect$descriptor() {
@@ -4763,8 +4573,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgRect(NVGcontext *ctx, float x, float y, float w, float h)
+     * {@snippet lang = c
+     * : * void nvgRect(NVGcontext *ctx, float x, float y, float w, float h)
      * }
      */
     public static MethodHandle nvgRect$handle() {
@@ -4773,8 +4583,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgRect(NVGcontext *ctx, float x, float y, float w, float h)
+     * {@snippet lang = c
+     * : * void nvgRect(NVGcontext *ctx, float x, float y, float w, float h)
      * }
      */
     public static MemorySegment nvgRect$address() {
@@ -4782,8 +4592,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgRect(NVGcontext *ctx, float x, float y, float w, float h)
+     * {@snippet lang = c
+     * : * void nvgRect(NVGcontext *ctx, float x, float y, float w, float h)
      * }
      */
     public static void nvgRect(MemorySegment ctx, float x, float y, float w, float h) {
@@ -4794,21 +4604,20 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, x, y, w, h);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgRoundedRect {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgRoundedRect");
 
@@ -4817,8 +4626,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgRoundedRect(NVGcontext *ctx, float x, float y, float w, float h, float r)
+     * {@snippet lang = c
+     * : * void nvgRoundedRect(NVGcontext *ctx, float x, float y, float w, float h, float r)
      * }
      */
     public static FunctionDescriptor nvgRoundedRect$descriptor() {
@@ -4827,8 +4636,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgRoundedRect(NVGcontext *ctx, float x, float y, float w, float h, float r)
+     * {@snippet lang = c
+     * : * void nvgRoundedRect(NVGcontext *ctx, float x, float y, float w, float h, float r)
      * }
      */
     public static MethodHandle nvgRoundedRect$handle() {
@@ -4837,8 +4646,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgRoundedRect(NVGcontext *ctx, float x, float y, float w, float h, float r)
+     * {@snippet lang = c
+     * : * void nvgRoundedRect(NVGcontext *ctx, float x, float y, float w, float h, float r)
      * }
      */
     public static MemorySegment nvgRoundedRect$address() {
@@ -4846,8 +4655,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgRoundedRect(NVGcontext *ctx, float x, float y, float w, float h, float r)
+     * {@snippet lang = c
+     * : * void nvgRoundedRect(NVGcontext *ctx, float x, float y, float w, float h, float r)
      * }
      */
     public static void nvgRoundedRect(MemorySegment ctx, float x, float y, float w, float h, float r) {
@@ -4858,24 +4667,23 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, x, y, w, h, r);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgRoundedRectVarying {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgRoundedRectVarying");
 
@@ -4884,8 +4692,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgRoundedRectVarying(NVGcontext *ctx, float x, float y, float w, float h, float radTopLeft, float radTopRight, float radBottomRight, float radBottomLeft)
+     * {@snippet lang = c
+     * : * void nvgRoundedRectVarying(NVGcontext *ctx, float x, float y, float w, float h, float radTopLeft, float radTopRight, float radBottomRight, float radBottomLeft)
      * }
      */
     public static FunctionDescriptor nvgRoundedRectVarying$descriptor() {
@@ -4894,8 +4702,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgRoundedRectVarying(NVGcontext *ctx, float x, float y, float w, float h, float radTopLeft, float radTopRight, float radBottomRight, float radBottomLeft)
+     * {@snippet lang = c
+     * : * void nvgRoundedRectVarying(NVGcontext *ctx, float x, float y, float w, float h, float radTopLeft, float radTopRight, float radBottomRight, float radBottomLeft)
      * }
      */
     public static MethodHandle nvgRoundedRectVarying$handle() {
@@ -4904,8 +4712,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgRoundedRectVarying(NVGcontext *ctx, float x, float y, float w, float h, float radTopLeft, float radTopRight, float radBottomRight, float radBottomLeft)
+     * {@snippet lang = c
+     * : * void nvgRoundedRectVarying(NVGcontext *ctx, float x, float y, float w, float h, float radTopLeft, float radTopRight, float radBottomRight, float radBottomLeft)
      * }
      */
     public static MemorySegment nvgRoundedRectVarying$address() {
@@ -4913,32 +4721,33 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgRoundedRectVarying(NVGcontext *ctx, float x, float y, float w, float h, float radTopLeft, float radTopRight, float radBottomRight, float radBottomLeft)
+     * {@snippet lang = c
+     * : * void nvgRoundedRectVarying(NVGcontext *ctx, float x, float y, float w, float h, float radTopLeft, float radTopRight, float radBottomRight, float radBottomLeft)
      * }
      */
-    public static void nvgRoundedRectVarying(MemorySegment ctx, float x, float y, float w, float h, float radTopLeft, float radTopRight, float radBottomRight, float radBottomLeft) {
+    public static void nvgRoundedRectVarying(MemorySegment ctx, float x, float y, float w, float h, float radTopLeft,
+            float radTopRight, float radBottomRight, float radBottomLeft) {
         var mh$ = nvgRoundedRectVarying.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
-                traceDowncall("nvgRoundedRectVarying", ctx, x, y, w, h, radTopLeft, radTopRight, radBottomRight, radBottomLeft);
+                traceDowncall("nvgRoundedRectVarying", ctx, x, y, w, h, radTopLeft, radTopRight, radBottomRight,
+                        radBottomLeft);
             }
             mh$.invokeExact(ctx, x, y, w, h, radTopLeft, radTopRight, radBottomRight, radBottomLeft);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgEllipse {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgEllipse");
 
@@ -4947,8 +4756,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgEllipse(NVGcontext *ctx, float cx, float cy, float rx, float ry)
+     * {@snippet lang = c
+     * : * void nvgEllipse(NVGcontext *ctx, float cx, float cy, float rx, float ry)
      * }
      */
     public static FunctionDescriptor nvgEllipse$descriptor() {
@@ -4957,8 +4766,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgEllipse(NVGcontext *ctx, float cx, float cy, float rx, float ry)
+     * {@snippet lang = c
+     * : * void nvgEllipse(NVGcontext *ctx, float cx, float cy, float rx, float ry)
      * }
      */
     public static MethodHandle nvgEllipse$handle() {
@@ -4967,8 +4776,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgEllipse(NVGcontext *ctx, float cx, float cy, float rx, float ry)
+     * {@snippet lang = c
+     * : * void nvgEllipse(NVGcontext *ctx, float cx, float cy, float rx, float ry)
      * }
      */
     public static MemorySegment nvgEllipse$address() {
@@ -4976,8 +4785,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgEllipse(NVGcontext *ctx, float cx, float cy, float rx, float ry)
+     * {@snippet lang = c
+     * : * void nvgEllipse(NVGcontext *ctx, float cx, float cy, float rx, float ry)
      * }
      */
     public static void nvgEllipse(MemorySegment ctx, float cx, float cy, float rx, float ry) {
@@ -4988,19 +4797,18 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, cx, cy, rx, ry);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgCircle {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgCircle");
 
@@ -5009,8 +4817,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgCircle(NVGcontext *ctx, float cx, float cy, float r)
+     * {@snippet lang = c
+     * : * void nvgCircle(NVGcontext *ctx, float cx, float cy, float r)
      * }
      */
     public static FunctionDescriptor nvgCircle$descriptor() {
@@ -5019,8 +4827,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgCircle(NVGcontext *ctx, float cx, float cy, float r)
+     * {@snippet lang = c
+     * : * void nvgCircle(NVGcontext *ctx, float cx, float cy, float r)
      * }
      */
     public static MethodHandle nvgCircle$handle() {
@@ -5029,8 +4837,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgCircle(NVGcontext *ctx, float cx, float cy, float r)
+     * {@snippet lang = c
+     * : * void nvgCircle(NVGcontext *ctx, float cx, float cy, float r)
      * }
      */
     public static MemorySegment nvgCircle$address() {
@@ -5038,8 +4846,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgCircle(NVGcontext *ctx, float cx, float cy, float r)
+     * {@snippet lang = c
+     * : * void nvgCircle(NVGcontext *ctx, float cx, float cy, float r)
      * }
      */
     public static void nvgCircle(MemorySegment ctx, float cx, float cy, float r) {
@@ -5050,16 +4858,15 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, cx, cy, r);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgFill {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgFill");
 
@@ -5068,8 +4875,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgFill(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgFill(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgFill$descriptor() {
@@ -5078,8 +4884,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgFill(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgFill(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgFill$handle() {
@@ -5088,8 +4893,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgFill(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgFill(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgFill$address() {
@@ -5097,8 +4901,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgFill(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgFill(NVGcontext *ctx)
      * }
      */
     public static void nvgFill(MemorySegment ctx) {
@@ -5109,16 +4912,15 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgStroke {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgStroke");
 
@@ -5127,8 +4929,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgStroke(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgStroke(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgStroke$descriptor() {
@@ -5137,8 +4938,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgStroke(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgStroke(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgStroke$handle() {
@@ -5147,8 +4947,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgStroke(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgStroke(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgStroke$address() {
@@ -5156,8 +4955,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgStroke(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgStroke(NVGcontext *ctx)
      * }
      */
     public static void nvgStroke(MemorySegment ctx) {
@@ -5168,19 +4966,18 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgCreateFont {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgCreateFont");
 
@@ -5189,8 +4986,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgCreateFont(NVGcontext *ctx, const char *name, const char *filename)
+     * {@snippet lang = c
+     * : * int nvgCreateFont(NVGcontext *ctx, const char *name, const char *filename)
      * }
      */
     public static FunctionDescriptor nvgCreateFont$descriptor() {
@@ -5199,8 +4996,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgCreateFont(NVGcontext *ctx, const char *name, const char *filename)
+     * {@snippet lang = c
+     * : * int nvgCreateFont(NVGcontext *ctx, const char *name, const char *filename)
      * }
      */
     public static MethodHandle nvgCreateFont$handle() {
@@ -5209,8 +5006,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgCreateFont(NVGcontext *ctx, const char *name, const char *filename)
+     * {@snippet lang = c
+     * : * int nvgCreateFont(NVGcontext *ctx, const char *name, const char *filename)
      * }
      */
     public static MemorySegment nvgCreateFont$address() {
@@ -5218,8 +5015,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgCreateFont(NVGcontext *ctx, const char *name, const char *filename)
+     * {@snippet lang = c
+     * : * int nvgCreateFont(NVGcontext *ctx, const char *name, const char *filename)
      * }
      */
     public static int nvgCreateFont(MemorySegment ctx, MemorySegment name, MemorySegment filename) {
@@ -5228,22 +5025,21 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgCreateFont", ctx, name, filename);
             }
-            return (int)mh$.invokeExact(ctx, name, filename);
+            return (int) mh$.invokeExact(ctx, name, filename);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgCreateFontAtIndex {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgCreateFontAtIndex");
 
@@ -5252,8 +5048,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgCreateFontAtIndex(NVGcontext *ctx, const char *name, const char *filename, const int fontIndex)
+     * {@snippet lang = c
+     * : * int nvgCreateFontAtIndex(NVGcontext *ctx, const char *name, const char *filename, const int fontIndex)
      * }
      */
     public static FunctionDescriptor nvgCreateFontAtIndex$descriptor() {
@@ -5262,8 +5058,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgCreateFontAtIndex(NVGcontext *ctx, const char *name, const char *filename, const int fontIndex)
+     * {@snippet lang = c
+     * : * int nvgCreateFontAtIndex(NVGcontext *ctx, const char *name, const char *filename, const int fontIndex)
      * }
      */
     public static MethodHandle nvgCreateFontAtIndex$handle() {
@@ -5272,8 +5068,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgCreateFontAtIndex(NVGcontext *ctx, const char *name, const char *filename, const int fontIndex)
+     * {@snippet lang = c
+     * : * int nvgCreateFontAtIndex(NVGcontext *ctx, const char *name, const char *filename, const int fontIndex)
      * }
      */
     public static MemorySegment nvgCreateFontAtIndex$address() {
@@ -5281,33 +5077,33 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgCreateFontAtIndex(NVGcontext *ctx, const char *name, const char *filename, const int fontIndex)
+     * {@snippet lang = c
+     * : * int nvgCreateFontAtIndex(NVGcontext *ctx, const char *name, const char *filename, const int fontIndex)
      * }
      */
-    public static int nvgCreateFontAtIndex(MemorySegment ctx, MemorySegment name, MemorySegment filename, int fontIndex) {
+    public static int nvgCreateFontAtIndex(MemorySegment ctx, MemorySegment name, MemorySegment filename,
+            int fontIndex) {
         var mh$ = nvgCreateFontAtIndex.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgCreateFontAtIndex", ctx, name, filename, fontIndex);
             }
-            return (int)mh$.invokeExact(ctx, name, filename, fontIndex);
+            return (int) mh$.invokeExact(ctx, name, filename, fontIndex);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgCreateFontMem {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_INT,
-            NVG.C_INT
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_INT,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgCreateFontMem");
 
@@ -5316,8 +5112,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgCreateFontMem(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData)
+     * {@snippet lang = c
+     * : * int nvgCreateFontMem(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData)
      * }
      */
     public static FunctionDescriptor nvgCreateFontMem$descriptor() {
@@ -5326,8 +5122,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgCreateFontMem(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData)
+     * {@snippet lang = c
+     * : * int nvgCreateFontMem(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData)
      * }
      */
     public static MethodHandle nvgCreateFontMem$handle() {
@@ -5336,8 +5132,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgCreateFontMem(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData)
+     * {@snippet lang = c
+     * : * int nvgCreateFontMem(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData)
      * }
      */
     public static MemorySegment nvgCreateFontMem$address() {
@@ -5345,34 +5141,34 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgCreateFontMem(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData)
+     * {@snippet lang = c
+     * : * int nvgCreateFontMem(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData)
      * }
      */
-    public static int nvgCreateFontMem(MemorySegment ctx, MemorySegment name, MemorySegment data, int ndata, int freeData) {
+    public static int nvgCreateFontMem(MemorySegment ctx, MemorySegment name, MemorySegment data, int ndata,
+            int freeData) {
         var mh$ = nvgCreateFontMem.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgCreateFontMem", ctx, name, data, ndata, freeData);
             }
-            return (int)mh$.invokeExact(ctx, name, data, ndata, freeData);
+            return (int) mh$.invokeExact(ctx, name, data, ndata, freeData);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgCreateFontMemAtIndex {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_INT,
-            NVG.C_INT,
-            NVG.C_INT
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_INT,
+                NVG.C_INT,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgCreateFontMemAtIndex");
 
@@ -5381,8 +5177,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgCreateFontMemAtIndex(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData, const int fontIndex)
+     * {@snippet lang = c
+     * : * int nvgCreateFontMemAtIndex(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData, const int fontIndex)
      * }
      */
     public static FunctionDescriptor nvgCreateFontMemAtIndex$descriptor() {
@@ -5391,8 +5187,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgCreateFontMemAtIndex(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData, const int fontIndex)
+     * {@snippet lang = c
+     * : * int nvgCreateFontMemAtIndex(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData, const int fontIndex)
      * }
      */
     public static MethodHandle nvgCreateFontMemAtIndex$handle() {
@@ -5401,8 +5197,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgCreateFontMemAtIndex(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData, const int fontIndex)
+     * {@snippet lang = c
+     * : * int nvgCreateFontMemAtIndex(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData, const int fontIndex)
      * }
      */
     public static MemorySegment nvgCreateFontMemAtIndex$address() {
@@ -5410,30 +5206,30 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgCreateFontMemAtIndex(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData, const int fontIndex)
+     * {@snippet lang = c
+     * : * int nvgCreateFontMemAtIndex(NVGcontext *ctx, const char *name, unsigned char *data, int ndata, int freeData, const int fontIndex)
      * }
      */
-    public static int nvgCreateFontMemAtIndex(MemorySegment ctx, MemorySegment name, MemorySegment data, int ndata, int freeData, int fontIndex) {
+    public static int nvgCreateFontMemAtIndex(MemorySegment ctx, MemorySegment name, MemorySegment data, int ndata,
+            int freeData, int fontIndex) {
         var mh$ = nvgCreateFontMemAtIndex.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgCreateFontMemAtIndex", ctx, name, data, ndata, freeData, fontIndex);
             }
-            return (int)mh$.invokeExact(ctx, name, data, ndata, freeData, fontIndex);
+            return (int) mh$.invokeExact(ctx, name, data, ndata, freeData, fontIndex);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgFindFont {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgFindFont");
 
@@ -5442,8 +5238,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgFindFont(NVGcontext *ctx, const char *name)
+     * {@snippet lang = c : * int nvgFindFont(NVGcontext *ctx, const char *name)
      * }
      */
     public static FunctionDescriptor nvgFindFont$descriptor() {
@@ -5452,8 +5247,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgFindFont(NVGcontext *ctx, const char *name)
+     * {@snippet lang = c : * int nvgFindFont(NVGcontext *ctx, const char *name)
      * }
      */
     public static MethodHandle nvgFindFont$handle() {
@@ -5462,8 +5256,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgFindFont(NVGcontext *ctx, const char *name)
+     * {@snippet lang = c : * int nvgFindFont(NVGcontext *ctx, const char *name)
      * }
      */
     public static MemorySegment nvgFindFont$address() {
@@ -5471,8 +5264,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgFindFont(NVGcontext *ctx, const char *name)
+     * {@snippet lang = c : * int nvgFindFont(NVGcontext *ctx, const char *name)
      * }
      */
     public static int nvgFindFont(MemorySegment ctx, MemorySegment name) {
@@ -5481,21 +5273,20 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgFindFont", ctx, name);
             }
-            return (int)mh$.invokeExact(ctx, name);
+            return (int) mh$.invokeExact(ctx, name);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgAddFallbackFontId {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_INT,
-            NVG.C_INT
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_INT,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgAddFallbackFontId");
 
@@ -5504,8 +5295,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgAddFallbackFontId(NVGcontext *ctx, int baseFont, int fallbackFont)
+     * {@snippet lang = c
+     * : * int nvgAddFallbackFontId(NVGcontext *ctx, int baseFont, int fallbackFont)
      * }
      */
     public static FunctionDescriptor nvgAddFallbackFontId$descriptor() {
@@ -5514,8 +5305,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgAddFallbackFontId(NVGcontext *ctx, int baseFont, int fallbackFont)
+     * {@snippet lang = c
+     * : * int nvgAddFallbackFontId(NVGcontext *ctx, int baseFont, int fallbackFont)
      * }
      */
     public static MethodHandle nvgAddFallbackFontId$handle() {
@@ -5524,8 +5315,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgAddFallbackFontId(NVGcontext *ctx, int baseFont, int fallbackFont)
+     * {@snippet lang = c
+     * : * int nvgAddFallbackFontId(NVGcontext *ctx, int baseFont, int fallbackFont)
      * }
      */
     public static MemorySegment nvgAddFallbackFontId$address() {
@@ -5533,8 +5324,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgAddFallbackFontId(NVGcontext *ctx, int baseFont, int fallbackFont)
+     * {@snippet lang = c
+     * : * int nvgAddFallbackFontId(NVGcontext *ctx, int baseFont, int fallbackFont)
      * }
      */
     public static int nvgAddFallbackFontId(MemorySegment ctx, int baseFont, int fallbackFont) {
@@ -5543,21 +5334,20 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgAddFallbackFontId", ctx, baseFont, fallbackFont);
             }
-            return (int)mh$.invokeExact(ctx, baseFont, fallbackFont);
+            return (int) mh$.invokeExact(ctx, baseFont, fallbackFont);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgAddFallbackFont {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgAddFallbackFont");
 
@@ -5566,8 +5356,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgAddFallbackFont(NVGcontext *ctx, const char *baseFont, const char *fallbackFont)
+     * {@snippet lang = c
+     * : * int nvgAddFallbackFont(NVGcontext *ctx, const char *baseFont, const char *fallbackFont)
      * }
      */
     public static FunctionDescriptor nvgAddFallbackFont$descriptor() {
@@ -5576,8 +5366,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgAddFallbackFont(NVGcontext *ctx, const char *baseFont, const char *fallbackFont)
+     * {@snippet lang = c
+     * : * int nvgAddFallbackFont(NVGcontext *ctx, const char *baseFont, const char *fallbackFont)
      * }
      */
     public static MethodHandle nvgAddFallbackFont$handle() {
@@ -5586,8 +5376,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgAddFallbackFont(NVGcontext *ctx, const char *baseFont, const char *fallbackFont)
+     * {@snippet lang = c
+     * : * int nvgAddFallbackFont(NVGcontext *ctx, const char *baseFont, const char *fallbackFont)
      * }
      */
     public static MemorySegment nvgAddFallbackFont$address() {
@@ -5595,8 +5385,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgAddFallbackFont(NVGcontext *ctx, const char *baseFont, const char *fallbackFont)
+     * {@snippet lang = c
+     * : * int nvgAddFallbackFont(NVGcontext *ctx, const char *baseFont, const char *fallbackFont)
      * }
      */
     public static int nvgAddFallbackFont(MemorySegment ctx, MemorySegment baseFont, MemorySegment fallbackFont) {
@@ -5605,19 +5395,18 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgAddFallbackFont", ctx, baseFont, fallbackFont);
             }
-            return (int)mh$.invokeExact(ctx, baseFont, fallbackFont);
+            return (int) mh$.invokeExact(ctx, baseFont, fallbackFont);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgResetFallbackFontsId {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgResetFallbackFontsId");
 
@@ -5626,8 +5415,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgResetFallbackFontsId(NVGcontext *ctx, int baseFont)
+     * {@snippet lang = c
+     * : * void nvgResetFallbackFontsId(NVGcontext *ctx, int baseFont)
      * }
      */
     public static FunctionDescriptor nvgResetFallbackFontsId$descriptor() {
@@ -5636,8 +5425,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgResetFallbackFontsId(NVGcontext *ctx, int baseFont)
+     * {@snippet lang = c
+     * : * void nvgResetFallbackFontsId(NVGcontext *ctx, int baseFont)
      * }
      */
     public static MethodHandle nvgResetFallbackFontsId$handle() {
@@ -5646,8 +5435,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgResetFallbackFontsId(NVGcontext *ctx, int baseFont)
+     * {@snippet lang = c
+     * : * void nvgResetFallbackFontsId(NVGcontext *ctx, int baseFont)
      * }
      */
     public static MemorySegment nvgResetFallbackFontsId$address() {
@@ -5655,8 +5444,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgResetFallbackFontsId(NVGcontext *ctx, int baseFont)
+     * {@snippet lang = c
+     * : * void nvgResetFallbackFontsId(NVGcontext *ctx, int baseFont)
      * }
      */
     public static void nvgResetFallbackFontsId(MemorySegment ctx, int baseFont) {
@@ -5667,17 +5456,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, baseFont);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgResetFallbackFonts {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgResetFallbackFonts");
 
@@ -5686,8 +5474,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgResetFallbackFonts(NVGcontext *ctx, const char *baseFont)
+     * {@snippet lang = c
+     * : * void nvgResetFallbackFonts(NVGcontext *ctx, const char *baseFont)
      * }
      */
     public static FunctionDescriptor nvgResetFallbackFonts$descriptor() {
@@ -5696,8 +5484,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgResetFallbackFonts(NVGcontext *ctx, const char *baseFont)
+     * {@snippet lang = c
+     * : * void nvgResetFallbackFonts(NVGcontext *ctx, const char *baseFont)
      * }
      */
     public static MethodHandle nvgResetFallbackFonts$handle() {
@@ -5706,8 +5494,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgResetFallbackFonts(NVGcontext *ctx, const char *baseFont)
+     * {@snippet lang = c
+     * : * void nvgResetFallbackFonts(NVGcontext *ctx, const char *baseFont)
      * }
      */
     public static MemorySegment nvgResetFallbackFonts$address() {
@@ -5715,8 +5503,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgResetFallbackFonts(NVGcontext *ctx, const char *baseFont)
+     * {@snippet lang = c
+     * : * void nvgResetFallbackFonts(NVGcontext *ctx, const char *baseFont)
      * }
      */
     public static void nvgResetFallbackFonts(MemorySegment ctx, MemorySegment baseFont) {
@@ -5727,17 +5515,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, baseFont);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgFontSize {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgFontSize");
 
@@ -5746,8 +5533,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgFontSize(NVGcontext *ctx, float size)
+     * {@snippet lang = c : * void nvgFontSize(NVGcontext *ctx, float size)
      * }
      */
     public static FunctionDescriptor nvgFontSize$descriptor() {
@@ -5756,8 +5542,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgFontSize(NVGcontext *ctx, float size)
+     * {@snippet lang = c : * void nvgFontSize(NVGcontext *ctx, float size)
      * }
      */
     public static MethodHandle nvgFontSize$handle() {
@@ -5766,8 +5551,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgFontSize(NVGcontext *ctx, float size)
+     * {@snippet lang = c : * void nvgFontSize(NVGcontext *ctx, float size)
      * }
      */
     public static MemorySegment nvgFontSize$address() {
@@ -5775,8 +5559,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgFontSize(NVGcontext *ctx, float size)
+     * {@snippet lang = c : * void nvgFontSize(NVGcontext *ctx, float size)
      * }
      */
     public static void nvgFontSize(MemorySegment ctx, float size) {
@@ -5787,17 +5570,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, size);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgFontBlur {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgFontBlur");
 
@@ -5806,8 +5588,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgFontBlur(NVGcontext *ctx, float blur)
+     * {@snippet lang = c : * void nvgFontBlur(NVGcontext *ctx, float blur)
      * }
      */
     public static FunctionDescriptor nvgFontBlur$descriptor() {
@@ -5816,8 +5597,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgFontBlur(NVGcontext *ctx, float blur)
+     * {@snippet lang = c : * void nvgFontBlur(NVGcontext *ctx, float blur)
      * }
      */
     public static MethodHandle nvgFontBlur$handle() {
@@ -5826,8 +5606,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgFontBlur(NVGcontext *ctx, float blur)
+     * {@snippet lang = c : * void nvgFontBlur(NVGcontext *ctx, float blur)
      * }
      */
     public static MemorySegment nvgFontBlur$address() {
@@ -5835,8 +5614,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgFontBlur(NVGcontext *ctx, float blur)
+     * {@snippet lang = c : * void nvgFontBlur(NVGcontext *ctx, float blur)
      * }
      */
     public static void nvgFontBlur(MemorySegment ctx, float blur) {
@@ -5847,17 +5625,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, blur);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTextLetterSpacing {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTextLetterSpacing");
 
@@ -5866,8 +5643,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTextLetterSpacing(NVGcontext *ctx, float spacing)
+     * {@snippet lang = c
+     * : * void nvgTextLetterSpacing(NVGcontext *ctx, float spacing)
      * }
      */
     public static FunctionDescriptor nvgTextLetterSpacing$descriptor() {
@@ -5876,8 +5653,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTextLetterSpacing(NVGcontext *ctx, float spacing)
+     * {@snippet lang = c
+     * : * void nvgTextLetterSpacing(NVGcontext *ctx, float spacing)
      * }
      */
     public static MethodHandle nvgTextLetterSpacing$handle() {
@@ -5886,8 +5663,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTextLetterSpacing(NVGcontext *ctx, float spacing)
+     * {@snippet lang = c
+     * : * void nvgTextLetterSpacing(NVGcontext *ctx, float spacing)
      * }
      */
     public static MemorySegment nvgTextLetterSpacing$address() {
@@ -5895,8 +5672,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTextLetterSpacing(NVGcontext *ctx, float spacing)
+     * {@snippet lang = c
+     * : * void nvgTextLetterSpacing(NVGcontext *ctx, float spacing)
      * }
      */
     public static void nvgTextLetterSpacing(MemorySegment ctx, float spacing) {
@@ -5907,17 +5684,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, spacing);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTextLineHeight {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTextLineHeight");
 
@@ -5926,8 +5702,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTextLineHeight(NVGcontext *ctx, float lineHeight)
+     * {@snippet lang = c
+     * : * void nvgTextLineHeight(NVGcontext *ctx, float lineHeight)
      * }
      */
     public static FunctionDescriptor nvgTextLineHeight$descriptor() {
@@ -5936,8 +5712,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTextLineHeight(NVGcontext *ctx, float lineHeight)
+     * {@snippet lang = c
+     * : * void nvgTextLineHeight(NVGcontext *ctx, float lineHeight)
      * }
      */
     public static MethodHandle nvgTextLineHeight$handle() {
@@ -5946,8 +5722,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTextLineHeight(NVGcontext *ctx, float lineHeight)
+     * {@snippet lang = c
+     * : * void nvgTextLineHeight(NVGcontext *ctx, float lineHeight)
      * }
      */
     public static MemorySegment nvgTextLineHeight$address() {
@@ -5955,8 +5731,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTextLineHeight(NVGcontext *ctx, float lineHeight)
+     * {@snippet lang = c
+     * : * void nvgTextLineHeight(NVGcontext *ctx, float lineHeight)
      * }
      */
     public static void nvgTextLineHeight(MemorySegment ctx, float lineHeight) {
@@ -5967,17 +5743,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, lineHeight);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTextAlign {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTextAlign");
 
@@ -5986,8 +5761,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTextAlign(NVGcontext *ctx, int align)
+     * {@snippet lang = c : * void nvgTextAlign(NVGcontext *ctx, int align)
      * }
      */
     public static FunctionDescriptor nvgTextAlign$descriptor() {
@@ -5996,8 +5770,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTextAlign(NVGcontext *ctx, int align)
+     * {@snippet lang = c : * void nvgTextAlign(NVGcontext *ctx, int align)
      * }
      */
     public static MethodHandle nvgTextAlign$handle() {
@@ -6006,8 +5779,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTextAlign(NVGcontext *ctx, int align)
+     * {@snippet lang = c : * void nvgTextAlign(NVGcontext *ctx, int align)
      * }
      */
     public static MemorySegment nvgTextAlign$address() {
@@ -6015,8 +5787,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTextAlign(NVGcontext *ctx, int align)
+     * {@snippet lang = c : * void nvgTextAlign(NVGcontext *ctx, int align)
      * }
      */
     public static void nvgTextAlign(MemorySegment ctx, int align) {
@@ -6027,17 +5798,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, align);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgFontFaceId {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgFontFaceId");
 
@@ -6046,8 +5816,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgFontFaceId(NVGcontext *ctx, int font)
+     * {@snippet lang = c : * void nvgFontFaceId(NVGcontext *ctx, int font)
      * }
      */
     public static FunctionDescriptor nvgFontFaceId$descriptor() {
@@ -6056,8 +5825,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgFontFaceId(NVGcontext *ctx, int font)
+     * {@snippet lang = c : * void nvgFontFaceId(NVGcontext *ctx, int font)
      * }
      */
     public static MethodHandle nvgFontFaceId$handle() {
@@ -6066,8 +5834,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgFontFaceId(NVGcontext *ctx, int font)
+     * {@snippet lang = c : * void nvgFontFaceId(NVGcontext *ctx, int font)
      * }
      */
     public static MemorySegment nvgFontFaceId$address() {
@@ -6075,8 +5842,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgFontFaceId(NVGcontext *ctx, int font)
+     * {@snippet lang = c : * void nvgFontFaceId(NVGcontext *ctx, int font)
      * }
      */
     public static void nvgFontFaceId(MemorySegment ctx, int font) {
@@ -6087,17 +5853,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, font);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgFontFace {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgFontFace");
 
@@ -6106,8 +5871,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgFontFace(NVGcontext *ctx, const char *font)
+     * {@snippet lang = c : * void nvgFontFace(NVGcontext *ctx, const char *font)
      * }
      */
     public static FunctionDescriptor nvgFontFace$descriptor() {
@@ -6116,8 +5880,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgFontFace(NVGcontext *ctx, const char *font)
+     * {@snippet lang = c : * void nvgFontFace(NVGcontext *ctx, const char *font)
      * }
      */
     public static MethodHandle nvgFontFace$handle() {
@@ -6126,8 +5889,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgFontFace(NVGcontext *ctx, const char *font)
+     * {@snippet lang = c : * void nvgFontFace(NVGcontext *ctx, const char *font)
      * }
      */
     public static MemorySegment nvgFontFace$address() {
@@ -6135,8 +5897,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgFontFace(NVGcontext *ctx, const char *font)
+     * {@snippet lang = c : * void nvgFontFace(NVGcontext *ctx, const char *font)
      * }
      */
     public static void nvgFontFace(MemorySegment ctx, MemorySegment font) {
@@ -6147,21 +5908,20 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, font);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgText {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_FLOAT,
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_FLOAT,
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgText");
 
@@ -6170,8 +5930,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * float nvgText(NVGcontext *ctx, float x, float y, const char *string, const char *end)
+     * {@snippet lang = c
+     * : * float nvgText(NVGcontext *ctx, float x, float y, const char *string, const char *end)
      * }
      */
     public static FunctionDescriptor nvgText$descriptor() {
@@ -6180,8 +5940,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * float nvgText(NVGcontext *ctx, float x, float y, const char *string, const char *end)
+     * {@snippet lang = c
+     * : * float nvgText(NVGcontext *ctx, float x, float y, const char *string, const char *end)
      * }
      */
     public static MethodHandle nvgText$handle() {
@@ -6190,8 +5950,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * float nvgText(NVGcontext *ctx, float x, float y, const char *string, const char *end)
+     * {@snippet lang = c
+     * : * float nvgText(NVGcontext *ctx, float x, float y, const char *string, const char *end)
      * }
      */
     public static MemorySegment nvgText$address() {
@@ -6199,8 +5959,8 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * float nvgText(NVGcontext *ctx, float x, float y, const char *string, const char *end)
+     * {@snippet lang = c
+     * : * float nvgText(NVGcontext *ctx, float x, float y, const char *string, const char *end)
      * }
      */
     public static float nvgText(MemorySegment ctx, float x, float y, MemorySegment string, MemorySegment end) {
@@ -6209,23 +5969,22 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgText", ctx, x, y, string, end);
             }
-            return (float)mh$.invokeExact(ctx, x, y, string, end);
+            return (float) mh$.invokeExact(ctx, x, y, string, end);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTextBox {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTextBox");
 
@@ -6234,8 +5993,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTextBox(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end)
+     * {@snippet lang = c
+     * : * void nvgTextBox(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end)
      * }
      */
     public static FunctionDescriptor nvgTextBox$descriptor() {
@@ -6244,8 +6003,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTextBox(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end)
+     * {@snippet lang = c
+     * : * void nvgTextBox(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end)
      * }
      */
     public static MethodHandle nvgTextBox$handle() {
@@ -6254,8 +6013,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTextBox(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end)
+     * {@snippet lang = c
+     * : * void nvgTextBox(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end)
      * }
      */
     public static MemorySegment nvgTextBox$address() {
@@ -6263,11 +6022,12 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTextBox(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end)
+     * {@snippet lang = c
+     * : * void nvgTextBox(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end)
      * }
      */
-    public static void nvgTextBox(MemorySegment ctx, float x, float y, float breakRowWidth, MemorySegment string, MemorySegment end) {
+    public static void nvgTextBox(MemorySegment ctx, float x, float y, float breakRowWidth, MemorySegment string,
+            MemorySegment end) {
         var mh$ = nvgTextBox.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
@@ -6275,22 +6035,21 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, x, y, breakRowWidth, string, end);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTextBounds {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_FLOAT,
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_FLOAT,
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTextBounds");
 
@@ -6299,8 +6058,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * float nvgTextBounds(NVGcontext *ctx, float x, float y, const char *string, const char *end, float *bounds)
+     * {@snippet lang = c
+     * : * float nvgTextBounds(NVGcontext *ctx, float x, float y, const char *string, const char *end, float *bounds)
      * }
      */
     public static FunctionDescriptor nvgTextBounds$descriptor() {
@@ -6309,8 +6068,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * float nvgTextBounds(NVGcontext *ctx, float x, float y, const char *string, const char *end, float *bounds)
+     * {@snippet lang = c
+     * : * float nvgTextBounds(NVGcontext *ctx, float x, float y, const char *string, const char *end, float *bounds)
      * }
      */
     public static MethodHandle nvgTextBounds$handle() {
@@ -6319,8 +6078,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * float nvgTextBounds(NVGcontext *ctx, float x, float y, const char *string, const char *end, float *bounds)
+     * {@snippet lang = c
+     * : * float nvgTextBounds(NVGcontext *ctx, float x, float y, const char *string, const char *end, float *bounds)
      * }
      */
     public static MemorySegment nvgTextBounds$address() {
@@ -6328,34 +6087,34 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * float nvgTextBounds(NVGcontext *ctx, float x, float y, const char *string, const char *end, float *bounds)
+     * {@snippet lang = c
+     * : * float nvgTextBounds(NVGcontext *ctx, float x, float y, const char *string, const char *end, float *bounds)
      * }
      */
-    public static float nvgTextBounds(MemorySegment ctx, float x, float y, MemorySegment string, MemorySegment end, MemorySegment bounds) {
+    public static float nvgTextBounds(MemorySegment ctx, float x, float y, MemorySegment string, MemorySegment end,
+            MemorySegment bounds) {
         var mh$ = nvgTextBounds.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgTextBounds", ctx, x, y, string, end, bounds);
             }
-            return (float)mh$.invokeExact(ctx, x, y, string, end, bounds);
+            return (float) mh$.invokeExact(ctx, x, y, string, end, bounds);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTextBoxBounds {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTextBoxBounds");
 
@@ -6364,8 +6123,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTextBoxBounds(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end, float *bounds)
+     * {@snippet lang = c
+     * : * void nvgTextBoxBounds(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end, float *bounds)
      * }
      */
     public static FunctionDescriptor nvgTextBoxBounds$descriptor() {
@@ -6374,8 +6133,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTextBoxBounds(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end, float *bounds)
+     * {@snippet lang = c
+     * : * void nvgTextBoxBounds(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end, float *bounds)
      * }
      */
     public static MethodHandle nvgTextBoxBounds$handle() {
@@ -6384,8 +6143,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTextBoxBounds(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end, float *bounds)
+     * {@snippet lang = c
+     * : * void nvgTextBoxBounds(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end, float *bounds)
      * }
      */
     public static MemorySegment nvgTextBoxBounds$address() {
@@ -6393,11 +6152,12 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTextBoxBounds(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end, float *bounds)
+     * {@snippet lang = c
+     * : * void nvgTextBoxBounds(NVGcontext *ctx, float x, float y, float breakRowWidth, const char *string, const char *end, float *bounds)
      * }
      */
-    public static void nvgTextBoxBounds(MemorySegment ctx, float x, float y, float breakRowWidth, MemorySegment string, MemorySegment end, MemorySegment bounds) {
+    public static void nvgTextBoxBounds(MemorySegment ctx, float x, float y, float breakRowWidth, MemorySegment string,
+            MemorySegment end, MemorySegment bounds) {
         var mh$ = nvgTextBoxBounds.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
@@ -6405,23 +6165,22 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, x, y, breakRowWidth, string, end, bounds);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTextGlyphPositions {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_FLOAT,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_FLOAT,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTextGlyphPositions");
 
@@ -6430,8 +6189,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgTextGlyphPositions(NVGcontext *ctx, float x, float y, const char *string, const char *end, NVGglyphPosition *positions, int maxPositions)
+     * {@snippet lang = c
+     * : * int nvgTextGlyphPositions(NVGcontext *ctx, float x, float y, const char *string, const char *end, NVGglyphPosition *positions, int maxPositions)
      * }
      */
     public static FunctionDescriptor nvgTextGlyphPositions$descriptor() {
@@ -6440,8 +6199,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgTextGlyphPositions(NVGcontext *ctx, float x, float y, const char *string, const char *end, NVGglyphPosition *positions, int maxPositions)
+     * {@snippet lang = c
+     * : * int nvgTextGlyphPositions(NVGcontext *ctx, float x, float y, const char *string, const char *end, NVGglyphPosition *positions, int maxPositions)
      * }
      */
     public static MethodHandle nvgTextGlyphPositions$handle() {
@@ -6450,8 +6209,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgTextGlyphPositions(NVGcontext *ctx, float x, float y, const char *string, const char *end, NVGglyphPosition *positions, int maxPositions)
+     * {@snippet lang = c
+     * : * int nvgTextGlyphPositions(NVGcontext *ctx, float x, float y, const char *string, const char *end, NVGglyphPosition *positions, int maxPositions)
      * }
      */
     public static MemorySegment nvgTextGlyphPositions$address() {
@@ -6459,31 +6218,31 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgTextGlyphPositions(NVGcontext *ctx, float x, float y, const char *string, const char *end, NVGglyphPosition *positions, int maxPositions)
+     * {@snippet lang = c
+     * : * int nvgTextGlyphPositions(NVGcontext *ctx, float x, float y, const char *string, const char *end, NVGglyphPosition *positions, int maxPositions)
      * }
      */
-    public static int nvgTextGlyphPositions(MemorySegment ctx, float x, float y, MemorySegment string, MemorySegment end, MemorySegment positions, int maxPositions) {
+    public static int nvgTextGlyphPositions(MemorySegment ctx, float x, float y, MemorySegment string,
+            MemorySegment end, MemorySegment positions, int maxPositions) {
         var mh$ = nvgTextGlyphPositions.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgTextGlyphPositions", ctx, x, y, string, end, positions, maxPositions);
             }
-            return (int)mh$.invokeExact(ctx, x, y, string, end, positions, maxPositions);
+            return (int) mh$.invokeExact(ctx, x, y, string, end, positions, maxPositions);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTextMetrics {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTextMetrics");
 
@@ -6492,8 +6251,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgTextMetrics(NVGcontext *ctx, float *ascender, float *descender, float *lineh)
+     * {@snippet lang = c
+     * : * void nvgTextMetrics(NVGcontext *ctx, float *ascender, float *descender, float *lineh)
      * }
      */
     public static FunctionDescriptor nvgTextMetrics$descriptor() {
@@ -6502,8 +6261,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgTextMetrics(NVGcontext *ctx, float *ascender, float *descender, float *lineh)
+     * {@snippet lang = c
+     * : * void nvgTextMetrics(NVGcontext *ctx, float *ascender, float *descender, float *lineh)
      * }
      */
     public static MethodHandle nvgTextMetrics$handle() {
@@ -6512,8 +6271,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgTextMetrics(NVGcontext *ctx, float *ascender, float *descender, float *lineh)
+     * {@snippet lang = c
+     * : * void nvgTextMetrics(NVGcontext *ctx, float *ascender, float *descender, float *lineh)
      * }
      */
     public static MemorySegment nvgTextMetrics$address() {
@@ -6521,11 +6280,12 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgTextMetrics(NVGcontext *ctx, float *ascender, float *descender, float *lineh)
+     * {@snippet lang = c
+     * : * void nvgTextMetrics(NVGcontext *ctx, float *ascender, float *descender, float *lineh)
      * }
      */
-    public static void nvgTextMetrics(MemorySegment ctx, MemorySegment ascender, MemorySegment descender, MemorySegment lineh) {
+    public static void nvgTextMetrics(MemorySegment ctx, MemorySegment ascender, MemorySegment descender,
+            MemorySegment lineh) {
         var mh$ = nvgTextMetrics.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
@@ -6533,22 +6293,21 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx, ascender, descender, lineh);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgTextBreakLines {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_INT,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_POINTER,
-            NVG.C_FLOAT,
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_INT,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_POINTER,
+                NVG.C_FLOAT,
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgTextBreakLines");
 
@@ -6557,8 +6316,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * int nvgTextBreakLines(NVGcontext *ctx, const char *string, const char *end, float breakRowWidth, NVGtextRow *rows, int maxRows)
+     * {@snippet lang = c
+     * : * int nvgTextBreakLines(NVGcontext *ctx, const char *string, const char *end, float breakRowWidth, NVGtextRow *rows, int maxRows)
      * }
      */
     public static FunctionDescriptor nvgTextBreakLines$descriptor() {
@@ -6567,8 +6326,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * int nvgTextBreakLines(NVGcontext *ctx, const char *string, const char *end, float breakRowWidth, NVGtextRow *rows, int maxRows)
+     * {@snippet lang = c
+     * : * int nvgTextBreakLines(NVGcontext *ctx, const char *string, const char *end, float breakRowWidth, NVGtextRow *rows, int maxRows)
      * }
      */
     public static MethodHandle nvgTextBreakLines$handle() {
@@ -6577,8 +6336,8 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * int nvgTextBreakLines(NVGcontext *ctx, const char *string, const char *end, float breakRowWidth, NVGtextRow *rows, int maxRows)
+     * {@snippet lang = c
+     * : * int nvgTextBreakLines(NVGcontext *ctx, const char *string, const char *end, float breakRowWidth, NVGtextRow *rows, int maxRows)
      * }
      */
     public static MemorySegment nvgTextBreakLines$address() {
@@ -6586,36 +6345,39 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * int nvgTextBreakLines(NVGcontext *ctx, const char *string, const char *end, float breakRowWidth, NVGtextRow *rows, int maxRows)
+     * {@snippet lang = c
+     * : * int nvgTextBreakLines(NVGcontext *ctx, const char *string, const char *end, float breakRowWidth, NVGtextRow *rows, int maxRows)
      * }
      */
-    public static int nvgTextBreakLines(MemorySegment ctx, MemorySegment string, MemorySegment end, float breakRowWidth, MemorySegment rows, int maxRows) {
+    public static int nvgTextBreakLines(MemorySegment ctx, MemorySegment string, MemorySegment end, float breakRowWidth,
+            MemorySegment rows, int maxRows) {
         var mh$ = nvgTextBreakLines.HANDLE;
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgTextBreakLines", ctx, string, end, breakRowWidth, rows, maxRows);
             }
-            return (int)mh$.invokeExact(ctx, string, end, breakRowWidth, rows, maxRows);
+            return (int) mh$.invokeExact(ctx, string, end, breakRowWidth, rows, maxRows);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
-    private static final int NVG_TEXTURE_ALPHA = (int)1L;
+
+    private static final int NVG_TEXTURE_ALPHA = (int) 1L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGtexture.NVG_TEXTURE_ALPHA = 1
+     * {@snippet lang = c : * enum NVGtexture.NVG_TEXTURE_ALPHA = 1
      * }
      */
     public static int NVG_TEXTURE_ALPHA() {
         return NVG_TEXTURE_ALPHA;
     }
-    private static final int NVG_TEXTURE_RGBA = (int)2L;
+
+    private static final int NVG_TEXTURE_RGBA = (int) 2L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGtexture.NVG_TEXTURE_RGBA = 2
+     * {@snippet lang = c : * enum NVGtexture.NVG_TEXTURE_RGBA = 2
      * }
      */
     public static int NVG_TEXTURE_RGBA() {
@@ -6624,9 +6386,8 @@ public class NVG extends NVG$shared {
 
     private static class nvgCreateInternal {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgCreateInternal");
 
@@ -6635,8 +6396,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGcontext *nvgCreateInternal(NVGparams *params)
+     * {@snippet lang = c : * NVGcontext *nvgCreateInternal(NVGparams *params)
      * }
      */
     public static FunctionDescriptor nvgCreateInternal$descriptor() {
@@ -6645,8 +6405,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGcontext *nvgCreateInternal(NVGparams *params)
+     * {@snippet lang = c : * NVGcontext *nvgCreateInternal(NVGparams *params)
      * }
      */
     public static MethodHandle nvgCreateInternal$handle() {
@@ -6655,8 +6414,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGcontext *nvgCreateInternal(NVGparams *params)
+     * {@snippet lang = c : * NVGcontext *nvgCreateInternal(NVGparams *params)
      * }
      */
     public static MemorySegment nvgCreateInternal$address() {
@@ -6664,8 +6422,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGcontext *nvgCreateInternal(NVGparams *params)
+     * {@snippet lang = c : * NVGcontext *nvgCreateInternal(NVGparams *params)
      * }
      */
     public static MemorySegment nvgCreateInternal(MemorySegment params) {
@@ -6674,18 +6431,17 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgCreateInternal", params);
             }
-            return (MemorySegment)mh$.invokeExact(params);
+            return (MemorySegment) mh$.invokeExact(params);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgDeleteInternal {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgDeleteInternal");
 
@@ -6694,8 +6450,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgDeleteInternal(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgDeleteInternal(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgDeleteInternal$descriptor() {
@@ -6704,8 +6459,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgDeleteInternal(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgDeleteInternal(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgDeleteInternal$handle() {
@@ -6714,8 +6468,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgDeleteInternal(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgDeleteInternal(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgDeleteInternal$address() {
@@ -6723,8 +6476,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgDeleteInternal(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgDeleteInternal(NVGcontext *ctx)
      * }
      */
     public static void nvgDeleteInternal(MemorySegment ctx) {
@@ -6735,17 +6487,16 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgInternalParams {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_POINTER,
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER,
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgInternalParams");
 
@@ -6754,8 +6505,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGparams *nvgInternalParams(NVGcontext *ctx)
+     * {@snippet lang = c : * NVGparams *nvgInternalParams(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgInternalParams$descriptor() {
@@ -6764,8 +6514,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGparams *nvgInternalParams(NVGcontext *ctx)
+     * {@snippet lang = c : * NVGparams *nvgInternalParams(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgInternalParams$handle() {
@@ -6774,8 +6523,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGparams *nvgInternalParams(NVGcontext *ctx)
+     * {@snippet lang = c : * NVGparams *nvgInternalParams(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgInternalParams$address() {
@@ -6783,8 +6531,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGparams *nvgInternalParams(NVGcontext *ctx)
+     * {@snippet lang = c : * NVGparams *nvgInternalParams(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgInternalParams(MemorySegment ctx) {
@@ -6793,18 +6540,17 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgInternalParams", ctx);
             }
-            return (MemorySegment)mh$.invokeExact(ctx);
+            return (MemorySegment) mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgDebugDumpPathCache {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgDebugDumpPathCache");
 
@@ -6813,8 +6559,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgDebugDumpPathCache(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgDebugDumpPathCache(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgDebugDumpPathCache$descriptor() {
@@ -6823,8 +6568,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgDebugDumpPathCache(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgDebugDumpPathCache(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgDebugDumpPathCache$handle() {
@@ -6833,8 +6577,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgDebugDumpPathCache(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgDebugDumpPathCache(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgDebugDumpPathCache$address() {
@@ -6842,8 +6585,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgDebugDumpPathCache(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgDebugDumpPathCache(NVGcontext *ctx)
      * }
      */
     public static void nvgDebugDumpPathCache(MemorySegment ctx) {
@@ -6854,33 +6596,36 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
-    private static final int NVG_ANTIALIAS = (int)1L;
+
+    private static final int NVG_ANTIALIAS = (int) 1L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcreateFlags.NVG_ANTIALIAS = 1
+     * {@snippet lang = c : * enum NVGcreateFlags.NVG_ANTIALIAS = 1
      * }
      */
     public static int NVG_ANTIALIAS() {
         return NVG_ANTIALIAS;
     }
-    private static final int NVG_STENCIL_STROKES = (int)2L;
+
+    private static final int NVG_STENCIL_STROKES = (int) 2L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcreateFlags.NVG_STENCIL_STROKES = 2
+     * {@snippet lang = c : * enum NVGcreateFlags.NVG_STENCIL_STROKES = 2
      * }
      */
     public static int NVG_STENCIL_STROKES() {
         return NVG_STENCIL_STROKES;
     }
-    private static final int NVG_DEBUG = (int)4L;
+
+    private static final int NVG_DEBUG = (int) 4L;
+
     /**
-     * {@snippet lang=c :
-     * enum NVGcreateFlags.NVG_DEBUG = 4
+     * {@snippet lang = c : * enum NVGcreateFlags.NVG_DEBUG = 4
      * }
      */
     public static int NVG_DEBUG() {
@@ -6889,9 +6634,8 @@ public class NVG extends NVG$shared {
 
     private static class nvgCreateContext {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            NVG.C_POINTER,
-            NVG.C_INT
-        );
+                NVG.C_POINTER,
+                NVG.C_INT);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgCreateContext");
 
@@ -6900,8 +6644,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * NVGcontext *nvgCreateContext(int flags)
+     * {@snippet lang = c : * NVGcontext *nvgCreateContext(int flags)
      * }
      */
     public static FunctionDescriptor nvgCreateContext$descriptor() {
@@ -6910,8 +6653,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * NVGcontext *nvgCreateContext(int flags)
+     * {@snippet lang = c : * NVGcontext *nvgCreateContext(int flags)
      * }
      */
     public static MethodHandle nvgCreateContext$handle() {
@@ -6920,8 +6662,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * NVGcontext *nvgCreateContext(int flags)
+     * {@snippet lang = c : * NVGcontext *nvgCreateContext(int flags)
      * }
      */
     public static MemorySegment nvgCreateContext$address() {
@@ -6929,8 +6670,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * NVGcontext *nvgCreateContext(int flags)
+     * {@snippet lang = c : * NVGcontext *nvgCreateContext(int flags)
      * }
      */
     public static MemorySegment nvgCreateContext(int flags) {
@@ -6939,18 +6679,17 @@ public class NVG extends NVG$shared {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("nvgCreateContext", flags);
             }
-            return (MemorySegment)mh$.invokeExact(flags);
+            return (MemorySegment) mh$.invokeExact(flags);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
 
     private static class nvgDeleteContext {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            NVG.C_POINTER
-        );
+                NVG.C_POINTER);
 
         public static final MemorySegment ADDR = NVGLoader.SYMBOL_LOOKUP.findOrThrow("nvgDeleteContext");
 
@@ -6959,8 +6698,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Function descriptor for:
-     * {@snippet lang=c :
-     * void nvgDeleteContext(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgDeleteContext(NVGcontext *ctx)
      * }
      */
     public static FunctionDescriptor nvgDeleteContext$descriptor() {
@@ -6969,8 +6707,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Downcall method handle for:
-     * {@snippet lang=c :
-     * void nvgDeleteContext(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgDeleteContext(NVGcontext *ctx)
      * }
      */
     public static MethodHandle nvgDeleteContext$handle() {
@@ -6979,8 +6716,7 @@ public class NVG extends NVG$shared {
 
     /**
      * Address for:
-     * {@snippet lang=c :
-     * void nvgDeleteContext(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgDeleteContext(NVGcontext *ctx)
      * }
      */
     public static MemorySegment nvgDeleteContext$address() {
@@ -6988,8 +6724,7 @@ public class NVG extends NVG$shared {
     }
 
     /**
-     * {@snippet lang=c :
-     * void nvgDeleteContext(NVGcontext *ctx)
+     * {@snippet lang = c : * void nvgDeleteContext(NVGcontext *ctx)
      * }
      */
     public static void nvgDeleteContext(MemorySegment ctx) {
@@ -7000,19 +6735,19 @@ public class NVG extends NVG$shared {
             }
             mh$.invokeExact(ctx);
         } catch (Error | RuntimeException ex) {
-           throw ex;
+            throw ex;
         } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
+            throw new AssertionError("should not reach here", ex$);
         }
     }
+
     private static final float NVG_PI = 3.1415927410125732f;
+
     /**
-     * {@snippet lang=c :
-     * #define NVG_PI 3.1415927410125732
+     * {@snippet lang = c : * #define NVG_PI 3.1415927410125732
      * }
      */
     public static float NVG_PI() {
         return NVG_PI;
     }
 }
-
