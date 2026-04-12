@@ -1,12 +1,12 @@
-#include <GL/glew.h>
+#include "glad/include/glad/gl.h"
 #define NANOVG_GL3_IMPLEMENTATION
 #include "nanovg/src/nanovg.h"
 #include "nanovg/src/nanovg_gl.h"
 
 NVGcontext *nvgCreateContext(int flags)
 {
-    GLenum err = glewInit();
-    if (GLEW_OK != err)
+    int version = gladLoaderLoadGL();
+    if (version == 0)
     {
         return NULL;
     }
