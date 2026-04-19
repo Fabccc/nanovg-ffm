@@ -48,6 +48,11 @@ public final class NVGLoader {
 
         String libName = switch (fullArch) {
             case "linux-amd64" -> "libnanovgffm-x86-64-linux.so";
+            case "linux-aarch64" -> "libnanovgffm-aarch64-linux.so";
+            case "windows-amd64" -> "libnanovgffm-x86-64-windows.dll";
+            case "macos-amd64" -> "libnanovgffm-x86-64-macos.dylib";
+            case "macos-aarch64" -> "libnanovgffm-aarch64-macos.dylib";
+            case "freebsd-amd64" -> "libnanovgffm-x86-64-freebsd.so";
             default -> throw new UnsupportedOperationException("Unsupported platform: " + fullArch);
         };
         try (var inputStream = NVGLoader.class.getResourceAsStream("/natives/" + libName)) {

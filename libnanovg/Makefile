@@ -1,37 +1,55 @@
-CC := gcc
+CC ?= gcc
 CC_ARM := aarch64-linux-gnu-gcc
 CFLAGS := -fPIC -I./nanovg/src -I./glad/include -I.
-LDFLAGS := -shared -lm -Wl,--version-script=exports.def
 CORE_LIB_DIR := ../core/lib
-PHONY := build-library-x86-64-linux build-library-arm64-linux
 
+# Default values if not provided
+OS_NAME ?= linux
+ARCH_NAME ?= x86-64
+
+# Platform specific configuration
+ifeq ($(OS_NAME),linux)
+	EXT := so
+	LDFLAGS := -shared -lm -Wl,--version-script=exports.def
+else ifeq ($(OS_NAME),windows)
+	EXT := dll
+	LDFLAGS := -shared
+else ifeq ($(OS_NAME),macos)
+	EXT := dylib
+	LDFLAGS := -dynamiclib
+else ifeq ($(OS_NAME),freebsd)
+	EXT := so
+	LDFLAGS := -shared -lm
+endif
+
+LIB_FILENAME := libnanovgffm-$(ARCH_NAME)-$(OS_NAME).$(EXT)
+
+.PHONY: all clean build build-library-x86-64-linux build-library-arm64-linux
+
+all: build
+
+build: $(LIB_FILENAME)
+
+$(LIB_FILENAME): nanovg.o glad.o nanovgffm.o
+	$(CC) $(LDFLAGS) -o $@ $^
+	mkdir -p $(CORE_LIB_DIR)
+	cp $@ $(CORE_LIB_DIR)/$@
+
+nanovg.o: nanovg/src/nanovg.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+glad.o: glad/src/gl.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+nanovgffm.o: nanovgffm.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Legacy targets for backward compatibility or direct usage
 build-library-x86-64-linux:
-	$(CC) $(CFLAGS) -c nanovg/src/nanovg.c -o nanovg.o
-	$(CC) $(CFLAGS) -c glad/src/gl.c -o glad.o
-	$(CC) $(CFLAGS) -c nanovgffm.c -o nanovgffm.o
-	$(CC) $(LDFLAGS) -o libnanovgffm.so nanovg.o nanovgffm.o glad.o
-	rm -f nanovg.o nanovgffm.o glad.o
-	cp libnanovgffm.so $(CORE_LIB_DIR)/libnanovgffm-x86-64-linux.so
+	$(MAKE) OS_NAME=linux ARCH_NAME=x86-64 build
 
 build-library-arm64-linux:
-	$(CC_ARM) $(CFLAGS) -c nanovg/src/nanovg.c -o nanovg.o
-	$(CC_ARM) $(CFLAGS) -c glad/src/gl.c -o glad.o
-	$(CC_ARM) $(CFLAGS) -c nanovgffm.c -o nanovgffm.o
-	$(CC_ARM) $(LDFLAGS) -o libnanovgffm.so nanovg.o nanovgffm.o glad.o
-	rm -f nanovg.o nanovgffm.o glad.o
-	cp libnanovgffm.so $(CORE_LIB_DIR)/libnanovgffm-aarch64-linux.so
-
-build-library-x86-64-windows:
-	echo "Not implemented"
-	exit 1
-
-build-library-x86-64-macos:
-	echo "Not implemented"
-	exit 1
-
-build-library-x86-64-freebsd:
-	echo "Not implemented"
-	exit 1
+	$(MAKE) CC=$(CC_ARM) OS_NAME=linux ARCH_NAME=aarch64 build
 
 clean:
-	rm -f libnanovgffm.so *.o
+	rm -f *.o *.so *.dll *.dylib libnanovgffm-*

@@ -2,3 +2,4 @@ target/
 /lib/
 *.log
 .venv
+.flattened-pom.xml

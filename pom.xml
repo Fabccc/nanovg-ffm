@@ -3,25 +3,55 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>com.fabcc.nanovg</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>0.0.2</version>
+  <version>${revision}</version>
+
   <packaging>pom</packaging>
+
   <name>parent-pom</name>
+
   <inceptionYear>2025</inceptionYear>
+
+  <modules>
+    <module>core</module>
+    <module>example</module>
+    <module>example-lwjgl</module>
+    <module>example-glfw-ffm</module>
+    <module>jmh-lwjgl</module>
+  </modules>
+
   <url>http://fabiencayre.fr/nanovg</url>
+
   <issueManagement>
     <system>Github</system>
     <url>https://github.com/Fabcccc/NanoVG-ffm</url>
   </issueManagement>
+
   <properties>
-    <revision>0.0.2</revision>
+    <revision>0.0.1-SNAPSHOT</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>25</maven.compiler.release>
     <assembly.skipAssembly>true</assembly.skipAssembly>
     <lwjgl.version>3.3.6</lwjgl.version>
     <lwjgl.natives>natives-linux</lwjgl.natives>
+    <fastutil.version>8.5.18</fastutil.version>
+    <junit.version>5.11.0</junit.version>
+    <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
+    <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
+    <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
+    <exec-maven-plugin.version>3.5.1</exec-maven-plugin.version>
+    <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
+    <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
+    <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+    <maven-install-plugin.version>3.1.2</maven-install-plugin.version>
+    <maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
+    <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
+    <maven-project-info-reports-plugin.version>3.6.1</maven-project-info-reports-plugin.version>
   </properties>
+
   <developers>
     <developer>
       <name>Fabien CAYRE</name>
@@ -29,6 +59,7 @@
       <email>fabiencayre81@gmail.com</email>
     </developer>
   </developers>
+
   <licenses>
     <license>
       <name>GNU General Public License v3.0</name>
@@ -36,12 +67,28 @@
       <url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
     </license>
   </licenses>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>com.fabcc.nanovg</groupId>
+        <artifactId>core</artifactId>
+        <version>${revision}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fabcc.nanovg</groupId>
+        <artifactId>example</artifactId>
+        <version>${revision}</version>
+      </dependency>
+      <dependency>
+        <groupId>it.unimi.dsi</groupId>
+        <artifactId>fastutil-core</artifactId>
+        <version>${fastutil.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.11.0</version>
+        <version>${junit.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -54,6 +101,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -67,7 +115,14 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
     <pluginManagement>
       <!-- lock down plugins versions to avoid using Maven defaults (may be moved to
       parent pom) -->
@@ -76,61 +131,75 @@
         https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.5.0</version>
+          <version>${maven-clean-plugin.version}</version>
         </plugin>
-        <!-- default lifecycle, jar packaging: see
-        https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>${maven-resources-plugin.version}</version>
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.13.0</version>
+          <version>${maven-compiler-plugin.version}</version>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.3.0</version>
+          <version>${maven-surefire-plugin.version}</version>
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.4.2</version>
+          <version>${maven-jar-plugin.version}</version>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>${maven-install-plugin.version}</version>
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>${maven-deploy-plugin.version}</version>
         </plugin>
         <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.7.1</version>
+          <version>${maven-assembly-plugin.version}</version>
         </plugin>
-        <!-- site lifecycle, see
-        https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
         <plugin>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.12.1</version>
+          <version>${maven-site-plugin.version}</version>
         </plugin>
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.6.1</version>
+          <version>${maven-project-info-reports-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
-          <version>3.5.1</version>
+          <version>${exec-maven-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>flatten-maven-plugin</artifactId>
+          <version>${flatten-maven-plugin.version}</version>
+          <configuration>
+            <updatePomFile>true</updatePomFile>
+            <flattenMode>resolveCiFriendliesOnly</flattenMode>
+          </configuration>
+          <executions>
+            <execution>
+              <id>flatten</id>
+              <phase>process-resources</phase>
+              <goals>
+                <goal>flatten</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>flatten.clean</id>
+              <phase>clean</phase>
+              <goals>
+                <goal>clean</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
   </build>
-  <modules>
-    <module>core</module>
-    <module>example</module>
-    <module>example-lwjgl</module>
-    <module>example-glfw-ffm</module>
-    <module>jmh-lwjgl</module>
-  </modules>
 </project>

@@ -1,0 +1,99 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build-native:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            os_name: linux
+            arch_name: x86-64
+          # - os: ubuntu-latest
+          #   os_name: linux
+          #   arch_name: aarch64
+          #   cc: aarch64-linux-gnu-gcc
+          #   pkg: gcc-aarch64-linux-gnu
+          # - os: windows-latest
+          #   os_name: windows
+          #   arch_name: x86-64
+          # - os: macos-latest
+          #   os_name: macos
+          #   arch_name: x86-64
+          # - os: macos-latest
+          #   os_name: macos
+          #   arch_name: aarch64
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dev libgles2-mesa-dev ${{ matrix.pkg }}
+
+      - name: Build Native Library
+        shell: bash
+        run: |
+          cd libnanovg
+          make OS_NAME=${{ matrix.os_name }} ARCH_NAME=${{ matrix.arch_name }} CC=${{ matrix.cc || 'gcc' }}
+
+      - name: Upload Native Library
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-${{ matrix.os_name }}-${{ matrix.arch_name }}
+          path: core/lib/libnanovgffm-*
+
+  build-java:
+    needs: build-native
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Download all Native Libraries
+        uses: actions/download-artifact@v4
+        with:
+          path: native-libs
+          pattern: native-*
+          merge-multiple: true
+
+      - name: Copy Native Libraries to core/lib
+        run: |
+          mkdir -p core/lib
+          cp native-libs/* core/lib/
+          ls -R core/lib
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Build with Maven
+        run: mvn -B package -Drevision=${{ steps.get_version.outputs.VERSION }} --file pom.xml -DskipTests
+
+      - name: Prepare Release Artifacts
+        run: |
+          mkdir -p release-artifacts
+          find . -name "*.jar" -type f -not -path "*/target/archive-tmp/*" -exec cp {} release-artifacts/ \;
+
+      - name: Upload Artifacts to Release
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'release'
+        with:
+          files: release-artifacts/*.jar
